@@ -25,7 +25,7 @@ class kelompokKerjaController extends Controller
      */
     public function create()
     {
-        //
+        return view('kelompokkerja.create');
     }
 
     /**
@@ -36,7 +36,13 @@ class kelompokKerjaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'kelompok_kerja' => 'required|unique:kelompok_kerja',
+        ]);
+        $kelompokKerja = new KelompokKerja();
+        $kelompokKerja->kelompok_kerja = $request->kelompok_kerja;
+        $kelompokKerja->save();
+        return redirect('kelompokkerja')->with('message', 'Penambahan Data Berhasil : ' . $request->kelompok_kerja);
     }
 
     /**
