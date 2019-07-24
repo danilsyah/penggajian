@@ -26,6 +26,7 @@ Route::resource('karyawan', 'KaryawanController');
 Route::resource('statuskawin', 'StatusKawinController');
 Route::resource('kalenderkerja', 'KalenderKerjaController');
 Route::resource('polakerja', 'PolaKerjaController');
+Route::resource('kelompokkerja', 'KelompokKerjaController');
 // routing modul kehadiran
 Route::get('kehadiran', 'KehadiranController@index');
 Route::get('kehadiran/create', 'KehadiranController@create');

@@ -72,6 +72,7 @@
                                     <li><a href="/kehadiran">Kehadiran</a></li>
                                     <li class="divider"></li>
                                     <li><a href="/polakerja">Pola Kerja</a></li>
+                                    <li><a href="/kelompokkerja">Kelompok Kerja</a></li>
                                     <li class="divider"></li>
                                     <li><a href="#">One more separated link</a></li>
                                 </ul>

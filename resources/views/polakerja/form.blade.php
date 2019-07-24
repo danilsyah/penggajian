@@ -14,8 +14,8 @@
             <tr>
                 <td></td>
                 <td>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true">Simpan</i></button>
-                    <a href="/polakerja" class="btn btn-danger"><i class="fa fa-sign-out" aria-hidden="true">Batal</i></a>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"> Simpan</i></button>
+                    <a href="/polakerja" class="btn btn-danger"><i class="fa fa-sign-out" aria-hidden="true"> Batal</i></a>
                 </td>
             </tr>
         </table>
