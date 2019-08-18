@@ -46,7 +46,7 @@ class KaryawanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nik' => 'required|unique:karyawan|min:6|max:6',
+            'nik' => 'required|unique:karyawan|min:6|max:10',
             'nama' => 'required',
             'tanggal_lahir' => 'required',
             'alamat' => 'required',
@@ -155,6 +155,40 @@ class KaryawanController extends Controller
     {
         $karyawan = karyawan::find($nik);
         $karyawan->delete();
-        return redirect('karyawan')->with('message', 'Karyawan Dengan NIK : ' . $nik);
+        return redirect('karyawan')->with('message', 'Karyawan Dengan NIK : ' . $nik . ' Berhasil Di Hapus');
+    }
+
+    function polaKerja($nik)
+    {
+        $data['karyawan'] = \DB::table('karyawan')->where('nik', $nik)->first();
+        $data['polaKerjaKaryawan'] = \DB::table('pola_kerja_karyawan')
+            ->join('pola_kerja', 'pola_kerja.id', '=', 'pola_kerja_karyawan.pola_kerja_id')
+            ->where('pola_kerja_karyawan.nik', $nik)
+            ->orderBy('pola_kerja_karyawan.tanggal', 'ASC')
+            ->paginate(7);
+        $data['noUrut'] = 1;
+        return view('karyawan.polakerja', $data);
+    }
+
+    function kehadiran($nik)
+    {
+        $data['noUrut'] = 1;
+        $data['karyawan'] = \DB::table('karyawan')->where('nik', $nik)->first();
+        $data['riwayatKehadiran'] = \DB::table('view_riwayat_kehadiran')
+            ->where('nik', $nik)
+            ->orderBy('tanggal_masuk')
+            ->paginate(7);
+        return view('karyawan.kehadiran', $data);
+    }
+
+    function lembur($nik)
+    {
+        $data['noUrut'] = 1;
+        $data['karyawan'] = \DB::table('karyawan')->where('nik', $nik)->first();
+        $data['riwayatLembur'] = \DB::table('lembur')
+            ->where('nik', $nik)
+            ->orderBy('tanggal_masuk', 'ASC')
+            ->paginate(7);
+        return view('karyawan.lembur', $data);
     }
 }

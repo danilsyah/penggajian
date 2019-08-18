@@ -19,11 +19,11 @@
         <tr>
             <td>{{$row->kode_jabatan}}</td>
             <td>{{$row->nama_jabatan}}</td>
-            <td>{{ $row->tunjangan_jabatan}}</td>
+            <td>@currency($row->tunjangan_jabatan)</td>
             <td width="50"><a href="/jabatan/{{$row->kode_jabatan}}/edit" class="btn btn-success btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
             </td>
             <td width="50">
-                {{Form::open(['url'=>'jabatan/'.$row->kode_jabatan,'method'=>'delete'])}}
+                {{Form::open(['url'=>'jabatan/'.$row->kode_jabatan,'method'=>'delete','onsubmit'=>'return confirm("Yakin Data Akan Dihapus ?")'])}}
                 <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> Hapus</button>
                 {{Form::close()}}
             </td>

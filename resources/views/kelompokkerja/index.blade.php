@@ -11,6 +11,8 @@
             <th>Kelompok Kerja</th>
             <th>Aksi</th>
             <th></th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -18,10 +20,12 @@
             <tr>
                 <td>{{$row->id}}</td>
                 <td>{{$row->kelompok_kerja}}</td>
+                <td width="50px"><a href="/kelompokkerja/{{$row->id}}/polakerja" class="btn btn-warning btn-sm"><i class="fa fa-calendar" aria-hidden="true"></i> Pola Kerja</a></td>
+                <td width="50px"><a href="/kelompokkerja/{{$row->id}}" class="btn btn-primary btn-sm"><i class="fa fa-users" aria-hidden="true"></i> Anggota</a></td>
                 <td width="50px"><a href="/kelompokkerja/{{$row->id}}/edit" class="btn btn-success btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a></td>
                 <td width="50px">
-                    {!! Form::open(['url'=>'kelompokkerja/'.$row->id,'method'=>'delete']) !!}
-                        <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> Hapus</button>
+                    {!! Form::open(['url'=>'kelompokkerja/'.$row->id,'method'=>'delete', 'onsubmit'=>'return confirm("Yakin Data Akan Dihapus ?")']) !!}
+                        <button type="submit" id="form-delete" class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> Hapus</button>
                     {!! Form::close() !!}
                 </td>
             </tr>

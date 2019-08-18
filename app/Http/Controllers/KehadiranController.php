@@ -7,6 +7,9 @@ use App\Kehadiran;
 use App\Karyawan;
 use App\StatusKehadiran;
 use Redirect;
+use App\Exports\KehadiranExport;
+use App\Imports\KehadiranImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KehadiranController extends Controller
 {
@@ -17,7 +20,8 @@ class KehadiranController extends Controller
             $data['kehadiran'] = Karyawan::select('karyawan.nik', 'karyawan.nama', 'departemen.nama_departemen', 'kehadiran.id', 'kehadiran.tanggal_masuk', 'kehadiran.tanggal_pulang', 'status_kehadiran.status_kehadiran')
                 ->leftJoin('kehadiran', function ($join) {
                     $periode = session('periodeKehadiran');
-                    $join->on('kehadiran.nik', '=', 'karyawan.nik')->whereRaw("date(kehadiran.tanggal_masuk)='$periode'");
+                    $join->on('kehadiran.nik', '=', 'karyawan.nik')
+                        ->whereRaw("date(kehadiran.tanggal_masuk)='$periode'");
                 })
                 ->leftJoin('status_kehadiran', 'kehadiran.kode_status_kehadiran', '=', 'status_kehadiran.kode_status_kehadiran')
                 ->join('departemen', 'karyawan.kode_departemen', '=', 'departemen.kode_departemen')
@@ -72,5 +76,23 @@ class KehadiranController extends Controller
     {
         session(['periodeKehadiran' => $request->periodeKehadiran]);
         return redirect('kehadiran')->with('message', 'Periode Kehadiran Sudah Di Filter Tanggal ' . $request->periodeKehadiran);
+    }
+
+    function exportExcel(Request $request)
+    {
+        $awal = $request->tanggal_mulai;
+        $akhir = $request->tanggal_selesai;
+        return Excel::download(new KehadiranExport($awal, $akhir), 'laporan_kehadiran.xlsx');
+    }
+
+    function importExcel(Request $request)
+    {
+        $file       = $request->file('file');
+        $fileName   = $file->getClientOriginalName();
+        $destionationPath = 'uploads';
+        $file->move($destionationPath, $fileName);
+
+        Excel::import(new KehadiranImport, public_path() . '/uploads/' . $fileName);
+        return redirect('kehadiran')->with('message', 'Laporan Absensi Berhasil di Import ke Sistem');
     }
 }

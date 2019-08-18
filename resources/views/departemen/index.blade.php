@@ -1,4 +1,14 @@
 @extends('template')
+@section('navigasi')
+    <h1>
+        Modul Karyawan
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="departemen/">Departemen</a></li>
+        <li class="active">Data Departemen</li>
+    </ol>
+@endsection
 @section('title','Data Departemen')
 @section('content')
 @include('alert')
@@ -21,7 +31,7 @@
             <td width="50"><a href="/departemen/{{$row->kode_departemen}}/edit" class="btn btn-success btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
             </td>
             <td width="50">
-                {{Form::open(['url'=>'departemen/'.$row->kode_departemen,'method'=>'delete'])}}
+                {{Form::open(['url'=>'departemen/'.$row->kode_departemen,'method'=>'delete','onsubmit'=>'return confirm("Yakin Data Akan Dihapus ?")'])}}
                 <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> Hapus</button>
                 {{Form::close()}}
             </td>

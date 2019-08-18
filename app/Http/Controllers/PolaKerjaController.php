@@ -41,6 +41,8 @@ class PolaKerjaController extends Controller
         ]);
         $polaKerja = new PolaKerja();
         $polaKerja->pola_kerja = $request->pola_kerja;
+        $polaKerja->jam_masuk = $request->jam_masuk;
+        $polaKerja->jam_pulang = $request->jam_pulang;
         $polaKerja->save();
         return redirect('polakerja')->with('message', 'Penambahan Data Berhasil :' . $request->pola_kerja);
     }
@@ -78,10 +80,13 @@ class PolaKerjaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'pola_kerja' => 'required|unique:pola_kerja',
+            'jam_masuk' => 'required|min:5|max:5',
+            'jam_pulang' => 'required|min:5|max:5',
         ]);
         $polaKerja = PolaKerja::find($id);
         $polaKerja->pola_kerja = $request->pola_kerja;
+        $polaKerja->jam_masuk = $request->jam_masuk;
+        $polaKerja->jam_pulang = $request->jam_pulang;
         $polaKerja->update();
         return redirect('polakerja')->with('message', 'Update data berhasil : ' . $request->pola_kerja);
     }

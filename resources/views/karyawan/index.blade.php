@@ -1,4 +1,14 @@
 @extends('template')
+@section('navigasi')
+    <h1>
+        Modul Karyawan
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="karyawan/">Karyawan</a></li>
+        <li class="active">Data Karyawan</li>
+    </ol>
+@endsection
 @section('title','Data Karyawan')
 @section('content')
 @include('alert')
@@ -11,13 +21,11 @@
             <th>Nama karyawan</th>
             <th>Tanggal Lahir</th>
             <th>Jenis Kelamin</th>
-            <th>Status Kawin</th>
             <th>Jabatan</th>
             <th>Departemen</th>
             <th>Tanggal Masuk</th>
             <th>Foto</th>
             <th>Aksi</th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -27,7 +35,6 @@
             <td>{{$row->nama}}</td>
             <td>{{$row->tanggal_lahir}}</td>
             <td>{{$row->jenis_kelamin}}</td>
-            <td>{{$row->keterangan}}</td>
             <td>{{$row->nama_jabatan}}</td>
             <td>{{$row->nama_departemen}}</td>
             <td>{{$row->tanggal_masuk}}</td>
@@ -41,12 +48,20 @@
                 @endif
                 
             </td>
-            <td width="50"><a href="/karyawan/{{$row->nik}}/edit" class="btn btn-success btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
-            </td>
-            <td width="50">
-                {{Form::open(['url'=>'karyawan/'.$row->nik,'method'=>'delete'])}}
-                <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> Hapus</button>
-                {{Form::close()}}
+            <td>
+               <div class="btn-group">
+                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Action <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="/karyawan/{{$row->nik}}/kehadiran">Kehadiran</a></li>
+                        <li><a href="/karyawan/{{$row->nik}}/lembur">Lembur</a></li>
+                        <li><a href="/karyawan/{{$row->nik}}/polakerja">Pola Kerja</a></li>
+                        <li><a href="/karyawan/{{$row->nik}}/edit">Edit</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="karyawan/{{$row->nik}}/delete" onclick="return confirm('Yakin Data Akan Di Hapus ?')">Hapus</a></li>
+                    </ul>
+               </div>
             </td>
         </tr>
         @endforeach

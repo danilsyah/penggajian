@@ -20,7 +20,7 @@
                     <td>{{$row->keterangan}}</td>
                     <td width="50"><a href="/kalenderkerja/{{$row->id}}/edit" class="btn btn-success btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a></td>
                     <td width="50">
-                        {!! Form::open(['url'=>'kalenderkerja/'.$row->id,'method'=>'delete']) !!}
+                        {!! Form::open(['url'=>'kalenderkerja/'.$row->id,'method'=>'delete','onsubmit'=>'return confirm("Yakin Data Akan Dihapus ?")']) !!}
                             <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> Hapus</button>
                         {!! Form::close() !!}
                     </td>

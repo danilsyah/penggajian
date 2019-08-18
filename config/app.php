@@ -162,6 +162,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -228,6 +229,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class, //menambahkan library
         'Html' => Collective\Html\HtmlFacade::class, //menambahkan library
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class, //menambahkan library excel
 
     ],
 

@@ -9,7 +9,16 @@
             @endif
             <tr>
                 <td><b>Nama Pola Kerja</b></td>
-                <td>{!! Form::text('pola_kerja',null, ['class'=>'form-control','placeholder'=>'Isi Nama Pola Kerja'])!!}</td>
+                <td>{!! Form::text('pola_kerja',null, ['class'=>'form-control','placeholder'=>'Isi Nama Pola Kerja'])!!}
+                </td>
+            </tr>
+            <tr>
+                <td><b>Jam Masuk</b></td>
+                <td>{!! Form::text('jam_masuk',null, ['class'=>'form-control','placeholder'=>'ex 00:00'])!!}</td>
+            </tr>
+            <tr>
+                <td><b>Jam Pulang</b></td>
+                <td>{!! Form::text('jam_pulang',null, ['class'=>'form-control','placeholder'=>'ex 00:00'])!!}</td>
             </tr>
             <tr>
                 <td></td>

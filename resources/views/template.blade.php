@@ -55,7 +55,7 @@
                             <li class="active"><a href="/"><i class="fa fa-tachometer"></i> Dashboard<span class="sr-only">(current)</span></a>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user-plus" aria-hidden="true"></i> Karyawan <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-slideshare" aria-hidden="true"></i> Modul Karyawan <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="/karyawan">Daftar Karyawan</a></li>
                                     <li class="divider"></li>
@@ -63,40 +63,40 @@
                                     <li><a href="/jabatan">Jabatan</a></li>
                                     <li><a href="/statuskawin">Status Kawin</a></li>
                                 </ul>
-                            </span>
+                            </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-money" aria-hidden="true"></i> Gaji <span
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Modul Absensi <span
                                         class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="/kalenderkerja">Kalender Kerja</a></li>
-                                    <li><a href="/kehadiran">Kehadiran</a></li>
+                                    <li><a href="/kehadiran">Riwayat Kehadiran</a></li>
+                                    <li><a href="/lembur">Riwayat Lembur</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="/polakerja">Pola Kerja</a></li>
                                     <li><a href="/kelompokkerja">Kelompok Kerja</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">One more separated link</a></li>
+                                    <li><a href="/kalenderkerja">Kalender Kerja</a></li>
+                                    <li><a href="/polakerja">Pola Kerja</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-btc" aria-hidden="true"></i> Modul Gaji <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="/komponenGaji"> Komponen Gaji</a></li>
+                                    <li><a href="/gaji">Gaji</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-file" aria-hidden="true"></i> Laporan <span
                                         class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">One more separated link</a></li>
+                                    <li><a href="#">Laporan Gaji</a></li>
                                 </ul>
                             </li>
                             <li><a href="/pengaturan"><i class="fa fa-cogs"></i> Pengaturan</a>
                         </ul>
-                        <form class="navbar-form navbar-left" role="search">
+                        {{-- <form class="navbar-form navbar-left" role="search">
                             <div class="form-group">
                                 <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
                             </div>
-                        </form>
+                        </form> --}}
                     </div>
                     <!-- /.navbar-collapse -->
                     <!-- Navbar Right Menu -->
@@ -141,7 +141,7 @@
                             <!-- /.messages-menu -->
 
                             <!-- Notifications Menu -->
-                            <li class="dropdown notifications-menu">
+                            {{-- <li class="dropdown notifications-menu">
                                 <!-- Menu toggle button -->
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-bell-o"></i>
@@ -163,9 +163,9 @@
                                     </li>
                                     <li class="footer"><a href="#">View all</a></li>
                                 </ul>
-                            </li>
+                            </li> --}}
                             <!-- Tasks Menu -->
-                            <li class="dropdown tasks-menu">
+                            {{-- <li class="dropdown tasks-menu">
                                 <!-- Menu Toggle Button -->
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-flag-o"></i>
@@ -202,7 +202,7 @@
                                         <a href="#">View all tasks</a>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> --}}
                             <!-- User Account Menu -->
                             <li class="dropdown user user-menu">
                                 <!-- Menu Toggle Button -->
@@ -258,19 +258,11 @@
             </nav>
         </header>
         <!-- Full Width Column -->
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="margin-top: 50px">
             <div class="container">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>
-                        Top Navigation
-                        <small>Example 2.0</small>
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li><a href="#">Layout</a></li>
-                        <li class="active">Top Navigation</li>
-                    </ol>
+                    @yield('navigasi')
                 </section>
 
                 <!-- Main content -->
@@ -317,6 +309,7 @@
     <script src="{{asset('adminlte/bower_components/fastclick/lib/fastclick.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{asset('adminlte/dist/js/adminlte.min.js')}}"></script>
+    <script src="{{asset('js/script.js')}}"></script>
 
     @stack('script')
 

@@ -1,5 +1,5 @@
 @extends('template')
-@section('title','Tambah Pola Kerja')
+@section('title','Tambah Kelompok Kerja')
 @section('content')
     @include('validation')
     <hr>
