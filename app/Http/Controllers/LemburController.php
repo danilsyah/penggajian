@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Karyawan;
 use Redirect;
 
@@ -42,17 +43,22 @@ class LemburController extends Controller
             'tanggal_pulang' => 'required',
             'jam_masuk'      => 'required',
             'jam_pulang'     => 'required',
-            'durasi_lembur'  => 'required',
+            // 'durasi_lembur'  => 'required',
         ]);
 
         $karyawan = \DB::table('karyawan')->where('nama', $request->nama)->first();
 
+        $jamLemburMulai = Carbon::parse($request->tanggal_masuk . ' ' . $request->jam_masuk);
+        $jamLemburAkhir = Carbon::parse($request->tanggal_pulang . ' ' . $request->jam_pulang);
+        $durasiLembur = $jamLemburMulai->diffInHours($jamLemburAkhir) . ':' . $jamLemburMulai->diff($jamLemburAkhir)->format('%I');
+        // $lembur = (gmdate("H:i ", $durasiLembur));
+        // dd($durasiLembur);
         if ($karyawan != null) {
             $data = [
                 'nik'                   => $karyawan->nik,
                 'tanggal_masuk'         => $request->tanggal_masuk . ' ' . $request->jam_masuk,
                 'tanggal_pulang'        => $request->tanggal_pulang . ' ' . $request->jam_pulang,
-                'durasi_lembur'         => $request->durasi_lembur
+                'durasi_lembur'         => $durasiLembur
             ];
             \DB::table('lembur')->insert($data);
             return Redirect('/lembur')->with('message', 'Data Lembur Dengan Nama ' . $request->nama . ' Berhasil Di Simpan');

@@ -1,14 +1,15 @@
+
 <table class="table table-bordered">
     <tr>
         <td width="200"><b>Nama Karyawan</b></td>
         <td>{!! Form::text('nama',null, ['list'=>'listKaryawan','class'=>'form-control','placeholder'=>'Input Nama Karyawan']) !!}</td>
     </tr>
     <tr>
-        <td><b>Tanggal Masuk</b></td>
+        <td><b>Waktu Mulai</b></td>
         <td>
             <div class="row">
                 <div class="col-md-3">
-                    {!! Form::date('tanggal_masuk',null, ['class'=>'form-control']) !!}
+                    {!! Form::date('tanggal_masuk',null, ['class'=>'form-control','id'=>'tgl_masuk']) !!}
                 </div>
                 <div class="col-md-3">
                     {!! Form::text('jam_masuk', null, ['class'=>'form-control','placeholder'=>'Format Jam = 00:00']) !!}
@@ -17,11 +18,11 @@
         </td>
     </tr>
     <tr>
-        <td><b>Tanggal Pulang</b></td>
+        <td><b>Waktu Selesai</b></td>
         <td>
             <div class="row">
                 <div class="col-md-3">
-                    {!! Form::date('tanggal_pulang',null, ['class'=>'form-control']) !!}
+                    {!! Form::date('tanggal_pulang',null, ['class'=>'form-control','id'=>'tgl_pulang']) !!}
                 </div>
                 <div class="col-md-3">
                         {!! Form::text('jam_pulang', null, ['class'=>'form-control','placeholder'=>'Format Jam = 00:00']) !!}
@@ -29,10 +30,10 @@
             </div>
         </td>
     </tr>
-    <tr>
+    {{-- <tr>
         <td><b>Durasi Lembur (Jam)</b></td>
-        <td> {!! Form::number('durasi_lembur',null, ['class'=>'form-control','placeholder'=>'Input Durasi Jam']) !!}</td>
-    </tr>
+        <td> {!! Form::number('durasi_lembur',null, ['class'=>'form-control','placeholder'=>'Input Durasi Jam','id'=>'durasiLembur']) !!}</td>
+    </tr> --}}
     <tr>
         <td></td>
         <td>

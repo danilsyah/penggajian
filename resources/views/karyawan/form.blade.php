@@ -69,6 +69,10 @@
         </td>
     </tr>
     <tr>
+        <td><b>Gaji Pokok</b></td>
+        <td>{!! Form::number('gaji_pokok', null, ['class'=>'form-control' ,'placeholder'=>'Isi Gaji Pokok']) !!}</td>
+    </tr>
+    <tr>
         <td><b>Upload Foto</b></td>
         <td>{{Form::file('foto')}}</td>
     </tr>

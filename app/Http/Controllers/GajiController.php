@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Gaji;
+use App\KomponenGaji;
 
 class GajiController extends Controller
 {
@@ -42,5 +43,17 @@ class GajiController extends Controller
     {
         Session(['periode_gaji' => $request->periode]);
         return redirect('gaji')->with('message', ' Periode Gaji di Filter menjadi : ' . $request->periode);
+    }
+
+    function show($id)
+    {
+        $gaji = Gaji::find($id);
+        $data['gaji'] = $gaji;
+        $data['komponenGaji'] = KomponenGaji::pluck('nama_komponen', 'kode_komponen');
+        $data['karyawan'] = \DB::table('karyawan')
+            ->join('jabatan', 'karyawan.kode_jabatan', '=', 'jabatan.kode_jabatan')
+            ->where('karyawan.nik', $gaji->nik)
+            ->first();
+        return view('gaji.show', $data);
     }
 }

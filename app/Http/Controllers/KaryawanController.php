@@ -46,12 +46,13 @@ class KaryawanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nik' => 'required|unique:karyawan|min:6|max:10',
-            'nama' => 'required',
+            'nik'           => 'required|unique:karyawan|min:6|max:10',
+            'nama'          => 'required',
             'tanggal_lahir' => 'required',
-            'alamat' => 'required',
+            'alamat'        => 'required',
             'tanggal_masuk' => 'required',
             'jenis_kelamin' => 'required|not_in:0',
+            'gaji_pokok'    => 'required'
         ]);
 
         if ($request->hasFile('foto')) {
@@ -75,6 +76,7 @@ class KaryawanController extends Controller
         $karyawan->foto             = $fileName;
         $karyawan->kode_departemen  = $request->kode_departemen;
         $karyawan->kode_jabatan     = $request->kode_jabatan;
+        $karyawan->gaji_pokok       = $request->gaji_pokok;
         $karyawan->save();
         return redirect('karyawan')->with('message', 'Berhasil Menambah Data Karyawan Dengan NIK :' . $request->nik);
     }
@@ -115,11 +117,12 @@ class KaryawanController extends Controller
     public function update(Request $request, $nik)
     {
         $request->validate([
-            'nama' => 'required',
+            'nama'          => 'required',
             'tanggal_lahir' => 'required',
-            'alamat' => 'required',
+            'alamat'        => 'required',
             'tanggal_masuk' => 'required',
             'jenis_kelamin' => 'required|not_in:0',
+            'gaji_pokok'    => 'required'
         ]);
 
 
@@ -141,6 +144,7 @@ class KaryawanController extends Controller
         }
         $karyawan->kode_departemen  = $request->kode_departemen;
         $karyawan->kode_jabatan     = $request->kode_jabatan;
+        $karyawan->gaji_pokok       = $request->gaji_pokok;
         $karyawan->update();
         return redirect('karyawan')->with('message', 'Berhasil Edit Data Karyawan Dengan NIK :' . $request->nik);
     }

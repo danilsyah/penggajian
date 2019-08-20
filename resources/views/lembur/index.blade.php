@@ -23,9 +23,9 @@
             <tr class="warning">
                 <th width="100">NIK</th>
                 <th>Nama Karyawan</th>
-                <th>Tanggal Masuk</th>
-                <th>Tanggal Pulang</th>
-                <th>Durasi Lembur (Jam)</th>
+                <th>Waktu Mulai</th>
+                <th>Waktu Selesai</th>
+                <th>Durasi Lembur</th>
                 <th>Aksi</th>
             </tr>
         </thead>

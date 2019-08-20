@@ -55,7 +55,7 @@
                             <td>{{$row->nik}}</td>
                             <td>{{$row->nama}}</td>
                             <td>{{$row->periode}}</td>
-                            <td><a href="#" class="btn btn-success">Detail</a></td>
+                            <td><a href="/gaji/{{$row->id}}" class="btn btn-success">Detail</a></td>
                             <td><a href="#" class="btn btn-danger">Cetak</a></td>
                         </tr>
                         @endforeach
