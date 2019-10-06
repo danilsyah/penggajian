@@ -23,9 +23,11 @@
             </table>
          </div>
          <div class="col-md-9">
+             {!! Form::open(['url'=>'filter-kehadiran/'.$karyawan->nik]) !!}
              @include('karyawan.filter')
+             {!! Form::close() !!}
              <table class="table table-bordered">
-                <tr>
+                <tr class="danger">
                     <th>Hari</th>
                     <th>Tanggal</th>
                     <th>Pola Kerja</th>

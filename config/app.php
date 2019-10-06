@@ -161,8 +161,10 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Collective\Html\HtmlServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class, // untuk form element html
+        Maatwebsite\Excel\ExcelServiceProvider::class, // untuk library excel
+        Codedge\Fpdf\FpdfServiceProvider::class, // untuk format laporan output pdf
+        Barryvdh\DomPDF\ServiceProvider::class, // DOMPDF 
 
         /*
          * Package Service Providers...
@@ -227,10 +229,11 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Form' => Collective\Html\FormFacade::class, //menambahkan library
-        'Html' => Collective\Html\HtmlFacade::class, //menambahkan library
+        'Form' => Collective\Html\FormFacade::class, //menambahkan library collective form
+        'Html' => Collective\Html\HtmlFacade::class, //menambahkan library  collective element
         'Excel' => Maatwebsite\Excel\Facades\Excel::class, //menambahkan library excel
-
+        'Fpdf' => Codedge\Fpdf\Facades\Fpdf::class, // untuk format laporan pdf
+        'PDF' => Barryvdh\DomPDF\Facade::class, //DOMPDF
     ],
 
 ];

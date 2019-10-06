@@ -22,9 +22,9 @@
             </table>
          </div>
          <div class="col-md-9">
-             @include('karyawan.filter')
+             {{-- @include('karyawan.filter') --}}
              <table class="table table-bordered">
-                <tr>
+                <tr class="danger">
                     <th>Hari.</th>
                     <th>Tanggal</th>
                     <th>Pola Kerja</th>

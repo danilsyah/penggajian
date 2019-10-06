@@ -21,11 +21,13 @@
     <table class="table table-hover" id="example1">
         <thead>
             <tr class="warning">
-                <th width="100">NIK</th>
+                <th width="50">NIK</th>
                 <th>Nama Karyawan</th>
                 <th>Waktu Mulai</th>
                 <th>Waktu Selesai</th>
-                <th>Durasi Lembur</th>
+                <th width="50">Durasi Lembur</th>
+                <th>Kalender Kerja</th>
+                <th>Upah</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -37,23 +39,17 @@
                      <td>{{$row->tanggal_masuk}}</td>
                      <td>{{$row->tanggal_pulang}}</td>
                      <td>{{$row->durasi_lembur}}</td>
+                     @if (isset($row->keterangan))
+                     <td>{{$row->keterangan}}</td>
+                     @else
+                     <td>Hari Kerja</td>   
+                     @endif
+                     <td>@currency($row->upah)</td>
                      <td>
                         {!! Form::open(['url'=>'hapus-riwayat-lembur/'.$row->id.'/'.'lembur','method'=>'delete']) !!}
                             <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Akan Dihapus ?')">Hapus</button>
                         {!! Form::close() !!}
                     </td>
-                     {{-- @if (isset($row->status_kehadiran))
-                        <td><a href="kehadiran/{{$row->id}}/edit" class="btn btn-success btn-sm" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</a></td>
-                        <td>
-                            {!! Form::open(['url'=>'kehadiran/'.$row->id,'method'=>'delete','onsubmit'=>'return confirm("Yakin Data Akan Dihapus ?")']) !!}
-                                <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> Hapus</button>
-                            {!! Form::close() !!}
-                        </td>
-                     @else
-                         <td></td>
-                         <td></td>
-                     @endif --}}
-                     
                  </tr>
              @endforeach
         </tbody>

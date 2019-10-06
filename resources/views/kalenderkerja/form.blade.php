@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-md-4">
                     @if(isset($kalenderkerja))
-                        {!! Form::date('tanggal',null, ['class'=>'form-control','placeholder'=>'Isi Tanggal Merah', 'readOnly']) !!}
+                        {!! Form::date('tanggal',null, ['class'=>'form-control','placeholder'=>'Isi Tanggal Merah']) !!}
                     @else
                         {!! Form::date('tanggal',null, ['class'=>'form-control','placeholder'=>'Isi Tanggal Merah']) !!}
                     @endif

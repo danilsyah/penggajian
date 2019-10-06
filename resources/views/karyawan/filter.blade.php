@@ -1,29 +1,41 @@
 <?php
-    $tgl = date("Y");
+    $tahun = date("Y");
+    $bulan = date("m");
+    if($bulan == '01'){
+        $bln = '1';
+    }elseif($bulan== '02'){
+        $bln = '2';
+    }elseif($bulan == '03'){
+        $bln = '3';
+    }elseif($bulan == '04'){
+        $bln = '4';
+    }elseif($bulan == '05'){
+        $bln = '5';
+    }elseif($bulan == '06'){
+        $bln = '6';
+    }elseif($bulan == '07'){
+        $bln = '7';
+    }elseif($bulan == '08'){
+        $bln = '8';
+    }elseif($bulan == '09'){
+        $bln = '9';
+    }elseif($bulan == '10'){
+        $bln = '10';
+    }elseif($bulan == '11'){
+        $bln = '11';
+    }elseif($bulan == '12'){
+        $bln = '12';
+    }
 ?>
 
-<table class="table table-bordered">
-    <tr>
+<table class="table table-hover">
+    <tr class="info">
         <td><b>Filter Laporan</b></td>
         <td>
-            {{-- {!! Form::select('bulan', [ '01'=>'Januari',
-                                        '02'=>'Februari',
-                                        '03'=>'Maret',
-                                        '04'=>'April',
-                                        '05'=>'Mei',
-                                        '06'=>'Juni',
-                                        '07'=>'Juli',
-                                        '08'=>'Agustus',
-                                        '09'=>'September',
-                                        '10'=>'Oktober',
-                                        '11'=>'November',
-                                        '12'=>'Desember'],
-                                        null, ['class'=>'form-control']) !!} --}}
-                                        {!! Form::selectMonth('bulan', null, ['class'=>'form-control']) !!}
+            {!! Form::selectMonth('bulan', $bln, ['class'=>'form-control']) !!}
         </td>
         <td>
-            {{-- {!! Form::select('tahun', ['2019'=>'2019'], null, ['class'=>'form-control']) !!} --}}
-            {!! Form::selectRange('tahun', 2018, $tgl,$tgl,['class'=>'form-control']) !!}
+            {!! Form::selectRange('tahun', 2018, $tahun,$tahun,['class'=>'form-control']) !!}
         </td>
         <td>
             <button type="submit" class="btn btn-primary">Tampilkan</button>

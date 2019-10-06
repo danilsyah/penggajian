@@ -31,7 +31,6 @@
                 <th>Tanggal Pulang</th>
                 <th>Status Kehadiran</th>
                 <th>Aksi</th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -44,14 +43,12 @@
                      <td>{{$row->tanggal_pulang}}</td>
                      <td>{{$row->status_kehadiran}}</td>
                      @if (isset($row->status_kehadiran))
-                        <td><a href="kehadiran/{{$row->id}}/edit" class="btn btn-success btn-sm" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</a></td>
                         <td>
                             {!! Form::open(['url'=>'kehadiran/'.$row->id,'method'=>'delete','onsubmit'=>'return confirm("Yakin Data Akan Dihapus ?")']) !!}
                                 <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> Hapus</button>
                             {!! Form::close() !!}
                         </td>
                      @else
-                         <td></td>
                          <td></td>
                      @endif
                      

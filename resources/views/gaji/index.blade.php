@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td><button type="submit" class="btn btn-danger">Buat</button></td>
+                    <td><button type="submit" class="btn btn-danger">Generate</button></td>
                 </tr>
             </table>
             {!! Form::close() !!}
@@ -46,7 +46,7 @@
                         <th>Nama Karyawan</>
                         <th>Periode Gaji</th>
                         <th>Detail</th>
-                        <th>Cetak</th>
+                        <th>Download</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,7 +56,7 @@
                             <td>{{$row->nama}}</td>
                             <td>{{$row->periode}}</td>
                             <td><a href="/gaji/{{$row->id}}" class="btn btn-success">Detail</a></td>
-                            <td><a href="#" class="btn btn-danger">Cetak</a></td>
+                            <td><a href="/gaji/{{$row->id}}/pdf" class="btn btn-danger">Slip Gaji</a></td>
                         </tr>
                         @endforeach
                 </tbody>

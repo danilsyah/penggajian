@@ -52,7 +52,8 @@ class KaryawanController extends Controller
             'alamat'        => 'required',
             'tanggal_masuk' => 'required',
             'jenis_kelamin' => 'required|not_in:0',
-            'gaji_pokok'    => 'required'
+            'gaji_pokok'    => 'required',
+            'status_pegawai' => 'required|not_in:0'
         ]);
 
         if ($request->hasFile('foto')) {
@@ -77,6 +78,7 @@ class KaryawanController extends Controller
         $karyawan->kode_departemen  = $request->kode_departemen;
         $karyawan->kode_jabatan     = $request->kode_jabatan;
         $karyawan->gaji_pokok       = $request->gaji_pokok;
+        $karyawan->status_pegawai       = $request->status_pegawai;
         $karyawan->save();
         return redirect('karyawan')->with('message', 'Berhasil Menambah Data Karyawan Dengan NIK :' . $request->nik);
     }
@@ -100,6 +102,7 @@ class KaryawanController extends Controller
      */
     public function edit($nik)
     {
+        $karyawan = Karyawan::find($nik);
         $data['karyawan'] = Karyawan::find($nik);
         $data['jabatan'] = Jabatan::pluck('nama_jabatan', 'kode_jabatan');
         $data['departemen'] = Departemen::pluck('nama_departemen', 'kode_departemen');
@@ -122,7 +125,8 @@ class KaryawanController extends Controller
             'alamat'        => 'required',
             'tanggal_masuk' => 'required',
             'jenis_kelamin' => 'required|not_in:0',
-            'gaji_pokok'    => 'required'
+            'gaji_pokok'    => 'required',
+            'status_pegawai' => 'required|not_in:0'
         ]);
 
 
@@ -145,6 +149,7 @@ class KaryawanController extends Controller
         $karyawan->kode_departemen  = $request->kode_departemen;
         $karyawan->kode_jabatan     = $request->kode_jabatan;
         $karyawan->gaji_pokok       = $request->gaji_pokok;
+        $karyawan->status_pegawai    = $request->status_pegawai;
         $karyawan->update();
         return redirect('karyawan')->with('message', 'Berhasil Edit Data Karyawan Dengan NIK :' . $request->nik);
     }
@@ -176,23 +181,79 @@ class KaryawanController extends Controller
 
     function kehadiran($nik)
     {
-        $data['noUrut'] = 1;
-        $data['karyawan'] = \DB::table('karyawan')->where('nik', $nik)->first();
-        $data['riwayatKehadiran'] = \DB::table('view_riwayat_kehadiran')
-            ->where('nik', $nik)
-            ->orderBy('tanggal_masuk')
-            ->paginate(7);
+        if (session('periodeFilterKehadiranBulan') && session('periodeFilterKehadiranTahun')) {
+            $periodeBulan = session('periodeFilterKehadiranBulan');
+            $periodeTahun = session('periodeFilterKehadiranTahun');
+            $data['noUrut'] = 1;
+            $data['karyawan'] = \DB::table('karyawan')->where('nik', $nik)->first();
+            $data['riwayatKehadiran'] = \DB::table('view_riwayat_kehadiran')
+                ->where('nik', $nik)
+                ->whereRaw('month(tanggal_masuk) = ?', $periodeBulan)
+                ->whereRaw('year(tanggal_masuk) = ?', $periodeTahun)
+                ->orderBy('tanggal_masuk', 'ASC')
+                ->paginate(7);
+        } else {
+            $data['noUrut'] = 1;
+            $data['karyawan'] = \DB::table('karyawan')->where('nik', $nik)->first();
+            $data['riwayatKehadiran'] = \DB::table('view_riwayat_kehadiran')
+                ->where('nik', $nik)
+                ->orderBy('tanggal_masuk')
+                ->paginate(7);
+        }
+
         return view('karyawan.kehadiran', $data);
     }
 
     function lembur($nik)
     {
-        $data['noUrut'] = 1;
-        $data['karyawan'] = \DB::table('karyawan')->where('nik', $nik)->first();
-        $data['riwayatLembur'] = \DB::table('lembur')
-            ->where('nik', $nik)
-            ->orderBy('tanggal_masuk', 'ASC')
-            ->paginate(7);
+        $bulanNow = date("m");
+        $tahunNow = date("Y");
+        // dd($bulanNow . '' . $tahunNow);
+        if (session('periodeFilterLemburBulan') && session('periodeFilterLemburTahun')) {
+            $periodeBulan = session('periodeFilterLemburBulan');
+            $periodeTahun = session('periodeFilterLemburTahun');
+            $data['noUrut'] = 1;
+            $data['karyawan'] = \DB::table('karyawan')->where('nik', $nik)->first();
+            $data['riwayatLembur'] = \DB::table('lembur')
+                ->select('lembur.*', 'karyawan.nama', 'kalender_kerja.keterangan')
+                ->join('karyawan', 'karyawan.nik', '=', 'lembur.nik')
+                ->leftJoin('kalender_kerja', 'kalender_kerja.id', '=', 'lembur.kalender_kerja_id')
+                ->where('lembur.nik', $nik)
+                ->whereRaw('month(lembur.tanggal_masuk) = ?', $periodeBulan)
+                ->whereRaw('year(lembur.tanggal_masuk) = ?', $periodeTahun)
+                ->orderBy('tanggal_masuk', 'ASC')
+                ->paginate(7);
+        } else {
+            $data['noUrut'] = 1;
+            $data['karyawan'] = \DB::table('karyawan')->where('nik', $nik)->first();
+            $data['riwayatLembur'] = \DB::table('lembur')
+                ->select('lembur.*', 'karyawan.nama', 'kalender_kerja.keterangan')
+                ->join('karyawan', 'karyawan.nik', '=', 'lembur.nik')
+                ->leftJoin('kalender_kerja', 'kalender_kerja.id', '=', 'lembur.kalender_kerja_id')
+                ->where('lembur.nik', $nik)
+                ->whereRaw('month(lembur.tanggal_masuk) = ?', $bulanNow)
+                ->whereRaw('year(lembur.tanggal_masuk) = ?', $tahunNow)
+                ->orderBy('tanggal_masuk', 'ASC')
+                ->paginate(7);
+        }
         return view('karyawan.lembur', $data);
+    }
+
+    function filterLembur($nik, Request $request)
+    {
+        $periodeBulan = $request->bulan;
+        $periodeTahun =  $request->tahun;
+        session(['periodeFilterLemburBulan' => $periodeBulan]);
+        session(['periodeFilterLemburTahun' => $periodeTahun]);
+        return redirect('karyawan/' . $nik . '/lembur')->with('message', 'Riwayat Lembur di Filter');
+    }
+
+    function filterKehadiran($nik, Request $request)
+    {
+        $periodeBulan = $request->bulan;
+        $periodeTahun =  $request->tahun;
+        session(['periodeFilterKehadiranBulan' => $periodeBulan]);
+        session(['periodeFilterKehadiranTahun' => $periodeTahun]);
+        return redirect('karyawan/' . $nik . '/kehadiran')->with('message', 'Riwayat Kehadiran di Filter');
     }
 }

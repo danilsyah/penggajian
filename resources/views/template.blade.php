@@ -16,11 +16,15 @@
     <!-- DataTables -->
     <link rel="stylesheet"
         href="{{asset('adminlte/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
-    <!-- Theme style -->
+    <!-- Select2 -->
+  <link rel="stylesheet" href="{{asset('adminlte/bower_components/select2/dist/css/select2.min.css')}}">
+        <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('adminlte/dist/css/AdminLTE.min.css')}}">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/skins/_all-skins.min.css')}}">
+    <link rel="stylesheet" href=" {{ asset('css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('clockpicker/dist/bootstrap-clockpicker.min.css')}}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -87,7 +91,7 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-file" aria-hidden="true"></i> Laporan <span
                                         class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Laporan Gaji</a></li>
+                                    <li><a href="#" data-toggle="modal" data-target="#myModalLaporanGaji">Laporan Gaji</a></li>
                                 </ul>
                             </li>
                             <li><a href="/pengaturan"><i class="fa fa-cogs"></i> Pengaturan</a>
@@ -211,7 +215,7 @@
                                     <img src="{{asset('adminlte/dist/img/user2-160x160.jpg')}}" class="user-image"
                                         alt="User Image">
                                     <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                                    <span class="hidden-xs">Alexander Pierce</span>
+                                    <span class="hidden-xs">Admin</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- The user image in the menu -->
@@ -288,21 +292,82 @@
         <footer class="main-footer">
             <div class="container">
                 <div class="pull-right hidden-xs">
-                    <b>Version</b> 2.4.0
+                    <b>Version</b> 2.4.0 - AdminLTE
                 </div>
-                <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All
-                rights
-                reserved.
+                <strong>Copyright &copy; <?php echo date('Y') ?> Developer By <a href="#"> Danil Syah Arihardjo</a>.</strong>
             </div>
             <!-- /.container -->
         </footer>
     </div>
     <!-- ./wrapper -->
+{{-- modal laporan gaji --}}
+<?php
+    $tahun = date('Y');
+    $bulan = date("m");
+    if($bulan == '01'){
+        $bln = '1';
+    }elseif($bulan== '02'){
+        $bln = '2';
+    }elseif($bulan == '03'){
+        $bln = '3';
+    }elseif($bulan == '04'){
+        $bln = '4';
+    }elseif($bulan == '05'){
+        $bln = '5';
+    }elseif($bulan == '06'){
+        $bln = '6';
+    }elseif($bulan == '07'){
+        $bln = '7';
+    }elseif($bulan == '08'){
+        $bln = '8';
+    }elseif($bulan == '09'){
+        $bln = '9';
+    }elseif($bulan == '10'){
+        $bln = '10';
+    }elseif($bulan == '11'){
+        $bln = '11';
+    }elseif($bulan == '12'){
+        $bln = '12';
+    }
+?>
+    <div id="myModalLaporanGaji" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Export Laporan Gaji</h4>
+            </div>
+            <div class="modal-body">
+            {!! Form::open(['url'=>'export-laporan-gaji-pdf']) !!}
+              <table class="table table-bordered">
+                  <tr>
+                      <td>Periode Gaji</td>
+                      <td>{!! Form::selectMonth('bulan', $bln, ['class'=>'form-control']) !!}</td>
+                      <td>{!! Form::selectRange('tahun', 2019, $tahun,$tahun,['class'=>'form-control']) !!}</td>
+                  </tr>
+                <tr>
+                    <td></td>
+                    <td><button type="submit" class="btn btn-success"> Download</button></td>
+                    <td></td>
+                </tr>
+              </table>
+            {!! Form::close() !!}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+      
+        </div>
+      </div>
 
     <!-- jQuery 3 -->
     <script src="{{asset('adminlte/bower_components/jquery/dist/jquery.min.js')}}"></script>
     <!-- Bootstrap 3.3.7 -->
     <script src="{{asset('adminlte/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+    <!-- Select2 -->
+    <script src="{{asset('adminlte/bower_components/select2/dist/js/select2.full.min.js')}}"></script>
     <!-- SlimScroll -->
     <script src="{{asset('adminlte/bower_components/jquery-slimscroll/jquery.slimscroll.min.js')}}"></script>
     <!-- FastClick -->
@@ -310,6 +375,19 @@
     <!-- AdminLTE App -->
     <script src="{{asset('adminlte/dist/js/adminlte.min.js')}}"></script>
     <script src="{{asset('js/script.js')}}"></script>
+    <script src="{{asset('clockpicker/dist/bootstrap-clockpicker.min.js')}}"></script>
+    <script>
+        $(function(){
+            $('.select2').select2()
+        })
+    </script>
+    <script>
+    $('.clockpicker').clockpicker({
+            placement: 'right',
+            align: 'left',
+            donetext: 'Done'
+        });
+    </script>
 
     @stack('script')
 

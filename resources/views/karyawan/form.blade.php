@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table class="table table-hover">
     <tr>
         <td width="170"><b>No Induk Karyawan</b></td>
         <td>
@@ -15,7 +15,13 @@
     </tr>
     <tr>
         <td><b>Nama Karyawan</b></td>
-        <td>{!! Form::text('nama',null, ['class'=>'form-control','placeholder'=>'Isi Nama Karyawan...']) !!}</td>
+        <td>
+            <div class="row">
+                <div class="col-md-4">
+                    {!! Form::text('nama',null, ['class'=>'form-control','placeholder'=>'Isi Nama Karyawan...']) !!}
+                </div>
+            </div>
+        </td>
     </tr>
     <tr>
         <td><b>Tanggal Lahir</b></td>
@@ -43,7 +49,13 @@
     </tr>
     <tr>
         <td><b>Status Kawin</b></td>
-        <td>{!! Form::select('kode_status_kawin',$status_kawin,null, ['class'=>'form-control']) !!}</td>
+        <td>
+            <div class="row">
+                <div class="col-md-4">
+                    {!! Form::select('kode_status_kawin',$status_kawin,null, ['class'=>'form-control select2']) !!}
+                </div>
+            </div>
+        </td>
     </tr>
     <tr>
         <td><b>Jenis Kelamin</b></td>
@@ -60,17 +72,38 @@
         <td>
             <div class="row">
                 <div class="col-md-5">
-                    {!! Form::select('kode_departemen',$departemen,null, ['class'=>'form-control']) !!}
+                    {!! Form::select('kode_departemen',$departemen,null, ['class'=>'form-control select2']) !!}
                 </div>
                 <div class="col-md-5">
-                    {!! Form::select('kode_jabatan',$jabatan,null, ['class'=>'form-control']) !!}
+                    {!! Form::select('kode_jabatan',$jabatan,null, ['class'=>'form-control select2']) !!}
                 </div>
             </div>
         </td>
     </tr>
     <tr>
         <td><b>Gaji Pokok</b></td>
-        <td>{!! Form::number('gaji_pokok', null, ['class'=>'form-control' ,'placeholder'=>'Isi Gaji Pokok']) !!}</td>
+        <td>
+            <div class="row">
+                <div class="col-md-4">
+                    {!! Form::number('gaji_pokok', null, ['class'=>'form-control','id'=>'gaji_pokok' ,'placeholder'=>'Isi Gaji Pokok', 'onKeyUp'=>'OnChange(this.value)', 'onKeyPress'=>'return isNumberKey(event)']) !!}
+                    {{-- <input class="form-control" type="number" value="" name="gaji_pokok" id="gaji_pokok" onkeyup="OnChange(this.value)" onKeyPress="return isNumberKey(event)"> --}}
+                </div>
+            </div>
+        </td>
+    </tr>
+    {{-- <tr>
+        <td><b>Upah PerJam</b></td>
+        <td><input class="form-control" type="number" name="upahPerJam" id="upahPerJam" value=""></td>
+    </tr> --}}
+    <tr>
+        <td><b>Status Pegawai</b></td>
+        <td>
+            <div class="row">
+                <div class="col-md-4">
+                    {!! Form::select('status_pegawai', ['-Pilih-', 'P'=>'Permanen','K'=>'Kontrak'],null, ['class'=>'form-control select2']) !!}
+                </div>
+            </div>
+        </td>
     </tr>
     <tr>
         <td><b>Upload Foto</b></td>
@@ -83,5 +116,7 @@
             <a href="/karyawan" class="btn btn-danger"><i class="fa fa-sign-out" aria-hidden="true"> Batal</i></a>
         </td>
     </tr>
-    
 </table>
+
+
+

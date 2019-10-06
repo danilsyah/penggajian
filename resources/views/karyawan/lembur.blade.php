@@ -23,14 +23,18 @@
             </table>
          </div>
          <div class="col-md-9">
+             {!! Form::open(['url'=>'filter-lembur/'.$karyawan->nik]) !!}
              @include('karyawan.filter')
+             {!! Form::close() !!}
              <table class="table table-bordered">
-                <tr>
+                <tr class="danger">
                     <th>Hari</th>
                     <th>Tanggal Masuk</th>
                     <th>Tanggal Pulang</th>
-                    <th>Durasi Lembur (Jam)</th>
-                    <th>Hapus</th>
+                    <th>Durasi Lembur</th>
+                    <th>Kalender Kerja</th>
+                    <th>Upah</th>
+                    <th>Aksi</th>
                 </tr>
                 @foreach ($riwayatLembur as $row)
                 <tr>
@@ -38,6 +42,12 @@
                     <td>{{$row->tanggal_masuk}}</td>
                     <td>{{$row->tanggal_pulang}}</td>
                     <td>{{$row->durasi_lembur}}</td>
+                    @if (isset($row->keterangan))
+                    <td>{{$row->keterangan}}</td>
+                    @else
+                    <td>Hari Kerja</td>
+                    @endif
+                    <td>@currency($row->upah)</td>
                     <td>
                         {!! Form::open(['url'=>'hapus-riwayat-lembur/'.$row->id.'/'.'karyawan','method'=>'delete']) !!}
                             <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Akan Dihapus ?')">Hapus</button>
@@ -46,6 +56,7 @@
                 </tr>    
                 @endforeach
              </table>
+           
              <center>  {{ $riwayatLembur->links() }}</center>
          </div>
      </div>

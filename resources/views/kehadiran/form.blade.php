@@ -1,7 +1,9 @@
 <table class="table table-bordered">
     <tr>
         <td width="150"><b>Nama Karyawan</b></td>
-        <td>{!! Form::text('nama',null, ['list'=>'listKaryawan','class'=>'form-control','placeholder'=>'Input Nama Karyawan']) !!}</td>
+        <td>
+            {!! Form::select('nik', $karyawan, null, ['class'=>'form-control select2','placeholder'=>'-Pilih-']) !!}
+        </td>
     </tr>
     <tr>
         <td><b>Tanggal Masuk</b></td>
@@ -11,7 +13,13 @@
                     {!! Form::date('tanggal_masuk',null, ['class'=>'form-control']) !!}
                 </div>
                 <div class="col-md-3">
-                    {!! Form::text('jam_masuk', null, ['class'=>'form-control','placeholder'=>'Format Jam = 00:00']) !!}
+                    {{-- {!! Form::text('jam_masuk', null, ['class'=>'form-control','placeholder'=>'Format Jam = 00:00']) !!} --}}
+                    <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                        <input type="text" class="form-control" value="" name="jam_masuk" placeholder="Input Waktu Masuk">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
                 </div>
             </div>
         </td>
@@ -24,7 +32,13 @@
                     {!! Form::date('tanggal_pulang',null, ['class'=>'form-control']) !!}
                 </div>
                 <div class="col-md-3">
-                        {!! Form::text('jam_pulang', null, ['class'=>'form-control','placeholder'=>'Format Jam = 00:00']) !!}
+                        {{-- {!! Form::text('jam_pulang', null, ['class'=>'form-control','placeholder'=>'Format Jam = 00:00']) !!} --}}
+                        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                                <input type="text" class="form-control" value="" name="jam_pulang" placeholder="Input Waktu Pulang">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                        </div>
                     </div>
             </div>
         </td>
@@ -43,8 +57,3 @@
     
 </table>
 
-<datalist id="listKaryawan">
-    @foreach ($karyawan as $item)
-        <option value="{{$item->nama}}"></option>
-    @endforeach
-</datalist>

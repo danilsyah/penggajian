@@ -41,7 +41,7 @@ class KehadiranController extends Controller
     public function create()
     {
         //    parsing data karyawan dari database
-        $data['karyawan'] = Karyawan::select('nama')->get();
+        $data['karyawan'] = Karyawan::pluck('nama', 'nik');
         $data['statusKehadiran'] = StatusKehadiran::pluck('status_kehadiran', 'kode_status_kehadiran');
         return view('kehadiran.create', $data);
     }
@@ -49,27 +49,34 @@ class KehadiranController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama'           => 'required',
+            'nik'           => 'required',
             'tanggal_masuk'  => 'required',
             'tanggal_pulang' => 'required',
             'jam_masuk'      => 'required',
             'jam_pulang'           => 'required',
         ]);
 
-        $karyawan = \DB::table('karyawan')->where('nama', $request->nama)->first();
+        $karyawan = \DB::table('karyawan')->where('nik', $request->nik)->first();
 
-        if ($karyawan != null) {
+        if ($request->nik != null) {
             $data = [
-                'nik' => $karyawan->nik,
+                'nik' => $request->nik,
                 'tanggal_masuk' => $request->tanggal_masuk . ' ' . $request->jam_masuk,
                 'tanggal_pulang' => $request->tanggal_pulang . ' ' . $request->jam_pulang,
                 'kode_status_kehadiran' => $request->kode_status_kehadiran
             ];
             \DB::table('kehadiran')->insert($data);
-            return Redirect('/kehadiran')->with('message', 'Data Kehadiran Dengan Nama ' . $request->nama . ' Berhasil Di Simpan');
+            return Redirect('/kehadiran')->with('message', 'Data Kehadiran Dengan Nama ' . $karyawan->nama . ' Berhasil Di Simpan');
         } else {
-            return Redirect::back()->with('message', 'Karyawan Dengan Nama ' . $request->nama . ' Tidak Ditemukan');
+            return Redirect::back()->with('message', 'Karyawan Dengan Nama ' . $karyawan->nama . ' Tidak Ditemukan');
         }
+    }
+
+    function destroy($id)
+    {
+        $kehadiran = Kehadiran::find($id);
+        $kehadiran->delete();
+        return redirect('kehadiran')->with('message', 'Data Berhasil Di Hapus Dengan ID : ' . $id);
     }
 
     public function ubahPeriodeKehadiran(Request $request)
@@ -94,5 +101,11 @@ class KehadiranController extends Controller
 
         Excel::import(new KehadiranImport, public_path() . '/uploads/' . $fileName);
         return redirect('kehadiran')->with('message', 'Laporan Absensi Berhasil di Import ke Sistem');
+    }
+
+    public function hitungJmlKehadiran($nik, $periode)
+    {
+        $jumlahKehadiran = \DB::select("SELECT COUNT(nik) as jml from kehadiran where left(tanggal_masuk,7) = '" . $periode . "' and nik = '" . $nik . "' ");
+        return $jumlahKehadiran;
     }
 }
