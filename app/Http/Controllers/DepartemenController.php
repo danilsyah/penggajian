@@ -12,6 +12,12 @@ class DepartemenController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $data['departemen'] = Departemen::all();
@@ -29,7 +35,7 @@ class DepartemenController extends Controller
     {
         $awal = 'DP';
         $noUrutAkhir = Departemen::max('kode_departemen');
-        $noUrut = (int)substr($noUrutAkhir, 6, 6);
+        $noUrut = (int) substr($noUrutAkhir, 6, 6);
         $noUrut++;
         $kodeDepartemen['kodeOtomatisDepartemen'] = $awal . sprintf("%06s", $noUrut);
         return view('departemen.create', $kodeDepartemen);

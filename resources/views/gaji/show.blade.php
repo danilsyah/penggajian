@@ -50,6 +50,12 @@
                 <td>@currency($karyawan->tunjangan_jabatan)</td>
                 <td></td>
             </tr>
+            <tr>
+                <td>Upah Lembur</td>
+                <td>Lembur</td>
+                <td>@currency($upahLembur[0]->upah)</td>
+                <td></td>
+            </tr>
             {{-- menghitung tunjangan / potongan  --}}
             <?php
                     $pendapatanTambahan = 0;
@@ -85,17 +91,15 @@
             <?php
                     $total = $karyawan->gaji_pokok + $karyawan->tunjangan_jabatan + $pendapatanTambahan + $upahLembur[0]->upah ;
                 ?>
-            <tr>
-                <td>Upah Lembur</td>
-                <td>Lembur</td>
-                <td>@currency($upahLembur[0]->upah)</td>
-                <td></td>
-            </tr>
+            
             <tr class="info">
                 <td><b>TOTAL GAJI</b></td>
                 <td></td>
                 <td class="totalGaji">@currency($total)</td>
-                <td></td>
+                {!! Form::open(['url'=>'totalgaji/'.$gaji->id]) !!}
+                {!! Form::hidden('totalGaji', $total) !!}
+                <td><button type="submit" class="btn btn-primary">Submit</button></td>
+                {!! Form::close() !!}
             </tr>
         </table>
     </div>

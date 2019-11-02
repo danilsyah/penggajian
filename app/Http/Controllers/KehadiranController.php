@@ -14,6 +14,11 @@ use Maatwebsite\Excel\Facades\Excel;
 class KehadiranController extends Controller
 {
 
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         if (session('periodeKehadiran')) {

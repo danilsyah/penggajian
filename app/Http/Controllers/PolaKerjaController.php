@@ -12,6 +12,12 @@ class PolaKerjaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $data['polaKerja'] = PolaKerja::all();

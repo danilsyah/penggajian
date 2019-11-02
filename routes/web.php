@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('/', 'HomeController@dashboard');
+Route::get('/', function () {
+    return redirect('login');
+});
 
 // routing page pengaturan
 Route::get('pengaturan', 'SettingController@index');
@@ -69,6 +71,11 @@ Route::resource('gaji', 'GajiController');
 Route::post('ubah-periode-gaji', 'GajiController@ubahPeriodeGaji');
 Route::post('tambah-komponen-gaji-detail', 'GajiController@tambahKomponenGajiDetail');
 Route::delete('hapus-komponen-gaji-detail/{id}', 'GajiController@hapusKomponenGajiDetail');
+Route::post('totalgaji/{id}', 'GajiController@updateTotalGaji');
 // Route::get('gaji/{id}/pdf', 'GajiController@slipGajiPdf'); // menggunakan library DOMPDF
 Route::get('gaji/{id}/pdf', 'GajiController@slipGajiPdf2'); // menggunakan library FPDF
 Route::post('export-laporan-gaji-pdf', 'GajiController@laporanGaji');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

@@ -19,7 +19,6 @@
         <tr class="warning">
             <th width="50px">NIK</th>
             <th>Nama karyawan</th>
-            <th>Tanggal Lahir</th>
             <th>Jenis Kelamin</th>
             <th>Jabatan</th>
             <th>Departemen</th>
@@ -36,7 +35,6 @@
         <tr>
             <td>{{$row->nik}}</td>
             <td>{{$row->nama}}</td>
-            <td>{{$row->tanggal_lahir}}</td>
             @if ($row->jenis_kelamin == 'P')
             <td>Perempuan</td>
             @else
@@ -46,9 +44,9 @@
             <td>{{$row->nama_departemen}}</td>
             <td>{{$row->tanggal_masuk}}</td>
             @if ($row->status_pegawai == 'P')
-            <td>Permanen</td>
+            <td><span class="label label-success">Permanen</span> </td>
             @elseif($row->status_pegawai == 'K')
-            <td>Kontrak</td>
+            <td><span class="label label-danger">Kontrak</span></td>
             @else
             <td>-</td>
             @endif
@@ -66,7 +64,7 @@
             </td>
             <td>
                <div class="btn-group">
-                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Action <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">

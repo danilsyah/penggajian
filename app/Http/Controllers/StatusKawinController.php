@@ -12,10 +12,16 @@ class StatusKawinController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $data['statuskawin'] = StatusKawin::all();
-        return view('statuskawin.index',$data);
+        return view('statuskawin.index', $data);
     }
 
     /**
@@ -37,14 +43,14 @@ class StatusKawinController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_status_kawin'=>'required|unique:status_kawin|max:3|min:1',
+            'kode_status_kawin' => 'required|unique:status_kawin|max:3|min:1',
             'keterangan' => 'required',
         ]);
         $statusKawin = new StatusKawin();
         $statusKawin->kode_status_kawin = $request->kode_status_kawin;
         $statusKawin->keterangan = $request->keterangan;
         $statusKawin->save();
-        return redirect('statuskawin')->with('message','Penambahan Data Status Kawin Berhasil Dengan Kode : '.$request->kode_status_kawin);
+        return redirect('statuskawin')->with('message', 'Penambahan Data Status Kawin Berhasil Dengan Kode : ' . $request->kode_status_kawin);
     }
 
     /**
@@ -67,7 +73,7 @@ class StatusKawinController extends Controller
     public function edit($kode_status_kawin)
     {
         $data['StatusKawin'] = StatusKawin::find($kode_status_kawin);
-        return view('statuskawin.edit',$data);
+        return view('statuskawin.edit', $data);
     }
 
     /**
@@ -85,7 +91,7 @@ class StatusKawinController extends Controller
         $StatusKawin = StatusKawin::find($kode_status_kawin);
         $StatusKawin->keterangan = $request->keterangan;
         $StatusKawin->update();
-        return redirect('statuskawin')->with('message','Update Data Berhasil Dengan Kode : '.$request->kode_status_kawin);
+        return redirect('statuskawin')->with('message', 'Update Data Berhasil Dengan Kode : ' . $request->kode_status_kawin);
     }
 
     /**
@@ -98,6 +104,6 @@ class StatusKawinController extends Controller
     {
         $StatusKawin = StatusKawin::find($kode_status_kawin);
         $StatusKawin->delete();
-        return redirect('statuskawin')->with('message','Data Berhasil Di Hapus Dengan Kode : '.$kode_status_kawin);
+        return redirect('statuskawin')->with('message', 'Data Berhasil Di Hapus Dengan Kode : ' . $kode_status_kawin);
     }
 }

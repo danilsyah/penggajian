@@ -1,6 +1,10 @@
 
 <table class="table table-bordered">
     <tr>
+        <td><b>Periode</b></td>
+        <td>{!! Form::select('periode', $periodeGaji, null, ['class'=>'form-control']) !!}</td>
+    </tr>
+    <tr>
         <td width="200"><b>Nama Karyawan</b></td>
         <td>
             {{-- {!! Form::text('nama',null, ['list'=>'listKaryawan','class'=>'form-control','placeholder'=>'Input Nama Karyawan']) !!} --}}

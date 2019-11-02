@@ -18,10 +18,19 @@
                 th, td {
                 padding: 5px;
                 }
+                h2.judul{
+                    text-align: center;
+                    font-size: 20px;
+                }
+                .total_gaji td{
+                    text-align: right;
+                }
             </style>
 
     </head>
     <body>
+        <img src="{{asset('uploads/'.$pengaturan->logo.'')}}" alt="logo">
+        <h2 class="judul">Laporan Gaji</h2>
         <table class="table table-bordered">
             <tr>
                 <th>Nama Perusahaan</th>
@@ -48,8 +57,7 @@
                 <th>Nama</th>
                 <th>Jabatan</th>
                 <th>Departemen</th>
-                <th>Hari Normal</th>
-                <th>Absen</th>
+                <th>Di Terima (Rp.)</th>
             </tr>
             </thead>
             <hr>
@@ -57,20 +65,25 @@
                 <?php
                    $noUrut = 1;
                 ?>
-                @foreach ($karyawan as $row)
+                @foreach ($gaji as $row)
                 <tr>
                     <td>{{$noUrut++}}</td>
                     <td>{{$row->nik}}</td>
                     <td>{{$row->nama}}</td>
                     <td>{{$row->nama_jabatan}}</td>
                     <td>{{$row->nama_departemen}}</td>
-                    <td>25</td>
-                    <td>{{$row->kehadiran}}</td>
-                    <td>jml lembur</td>
-                    <td>Gaji</td>
+                    <td>@currency($row->total_gaji),-</td>
                 </tr>
                 @endforeach
+               
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4"></td>
+                    <td class="totalgaji"><b>Total : </b></td>
+                    <td><b>@currency($totalGaji)</b></td>
+                </tr>
+            </tfoot>
         </table>
     </body>
 </html>

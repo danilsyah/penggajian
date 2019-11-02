@@ -7,6 +7,11 @@ use App\KomponenGaji;
 
 class KomponenGajiController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     function index()
     {
         $data['komponenGaji'] = KomponenGaji::all();

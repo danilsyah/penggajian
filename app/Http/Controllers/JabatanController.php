@@ -13,10 +13,15 @@ class JabatanController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $data['jabatan'] = Jabatan::all();
-        return view('jabatan.index',$data);
+        return view('jabatan.index', $data);
     }
 
     /**
@@ -28,10 +33,10 @@ class JabatanController extends Controller
     {
         $awal = 'JB';
         $noUrutAkhir = Jabatan::max('kode_jabatan');
-        $noUrut = (int) substr($noUrutAkhir,3,3);
+        $noUrut = (int) substr($noUrutAkhir, 3, 3);
         $noUrut++;
-        $kodeOtomatisJabatan['kodeOtomatisJabatan'] = $awal.sprintf("%03s",$noUrut);
-        return view('jabatan.create',$kodeOtomatisJabatan);
+        $kodeOtomatisJabatan['kodeOtomatisJabatan'] = $awal . sprintf("%03s", $noUrut);
+        return view('jabatan.create', $kodeOtomatisJabatan);
     }
 
     /**
@@ -43,16 +48,16 @@ class JabatanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_jabatan' =>'required|unique:jabatan|max:5|min:5',
-            'nama_jabatan' =>'required|min:5',
-            'tunjangan_jabatan' =>'required',
+            'kode_jabatan' => 'required|unique:jabatan|max:5|min:5',
+            'nama_jabatan' => 'required|min:5',
+            'tunjangan_jabatan' => 'required',
         ]);
         $jabatan = new Jabatan();
         $jabatan->kode_jabatan = $request->kode_jabatan;
         $jabatan->nama_jabatan = $request->nama_jabatan;
         $jabatan->tunjangan_jabatan = $request->tunjangan_jabatan;
         $jabatan->save();
-        return redirect('jabatan')->with('message','Penambahan Data Berhasil Dengan Kode : '.$request->kode_jabatan);
+        return redirect('jabatan')->with('message', 'Penambahan Data Berhasil Dengan Kode : ' . $request->kode_jabatan);
     }
 
     /**
@@ -76,7 +81,7 @@ class JabatanController extends Controller
     {
         $data['jabatan'] = Jabatan::find($kode_jabatan);
         //dd($data);
-        return view('jabatan.edit',$data);
+        return view('jabatan.edit', $data);
     }
 
     /**
@@ -89,14 +94,14 @@ class JabatanController extends Controller
     public function update(Request $request, $kode_jabatan)
     {
         $request->validate([
-            'nama_jabatan' =>'required|min:5',
+            'nama_jabatan' => 'required|min:5',
             'tunjangan_jabatan' => 'required',
         ]);
         $jabatan = Jabatan::find($kode_jabatan);
         $jabatan->nama_jabatan = $request->nama_jabatan;
         $jabatan->tunjangan_jabatan = $request->tunjangan_jabatan;
         $jabatan->update();
-        return redirect('jabatan')->with('message','Update Data Berhasil Dengan Kode : '.$kode_jabatan);
+        return redirect('jabatan')->with('message', 'Update Data Berhasil Dengan Kode : ' . $kode_jabatan);
     }
 
     /**
@@ -109,6 +114,6 @@ class JabatanController extends Controller
     {
         $jabatan = Jabatan::find($kode_jabatan);
         $jabatan->delete();
-        return redirect('jabatan')->with('message','Data Berhasil Di Hapus Dengan Kode : '.$kode_jabatan);
+        return redirect('jabatan')->with('message', 'Data Berhasil Di Hapus Dengan Kode : ' . $kode_jabatan);
     }
 }

@@ -12,10 +12,15 @@ class KalenderKerjaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
-        $data['kalenderkerja'] = KalenderKerja::all(); 
-        return view('kalenderkerja.index',$data);
+        $data['kalenderkerja'] = KalenderKerja::all();
+        return view('kalenderkerja.index', $data);
     }
 
     /**
@@ -45,7 +50,7 @@ class KalenderKerjaController extends Controller
         $kalenderkerja->tanggal = $request->tanggal;
         $kalenderkerja->keterangan = $request->keterangan;
         $kalenderkerja->save();
-        return redirect('kalenderkerja')->with('message','Penambahan Data Kalender Kerja Berhasil Pada Tanggal : '. $request->tanggal);
+        return redirect('kalenderkerja')->with('message', 'Penambahan Data Kalender Kerja Berhasil Pada Tanggal : ' . $request->tanggal);
     }
 
     /**
@@ -68,7 +73,7 @@ class KalenderKerjaController extends Controller
     public function edit($id)
     {
         $data['kalenderkerja'] = KalenderKerja::find($id);
-        return view('kalenderkerja.edit',$data);
+        return view('kalenderkerja.edit', $data);
     }
 
     /**
@@ -84,11 +89,11 @@ class KalenderKerjaController extends Controller
             'tanggal' => 'required',
             'keterangan' => 'required',
         ]);
-        
+
         $kalenderkerja = KalenderKerja::Find($id);
         $kalenderkerja->keterangan = $request->keterangan;
         $kalenderkerja->update();
-        return redirect('kalenderkerja')->with('message','Edit Data Kalender Kerja Berhasil Pada Tanggal : '. $request->tanggal);
+        return redirect('kalenderkerja')->with('message', 'Edit Data Kalender Kerja Berhasil Pada Tanggal : ' . $request->tanggal);
     }
 
     /**
@@ -101,6 +106,6 @@ class KalenderKerjaController extends Controller
     {
         $kalenderkerja = KalenderKerja::Find($id);
         $kalenderkerja->delete();
-        return redirect('kalenderkerja')->with('message','Hapus Data Kalender Kerja Berhasil Pada Tanggal : '. $kalenderkerja->tanggal);
+        return redirect('kalenderkerja')->with('message', 'Hapus Data Kalender Kerja Berhasil Pada Tanggal : ' . $kalenderkerja->tanggal);
     }
 }

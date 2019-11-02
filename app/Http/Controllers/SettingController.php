@@ -6,19 +6,26 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    function index(){
-        $data['pengaturan'] = \DB::table('pengaturan')->where('id',1)->first(); 
-        return view('pengaturan',$data);
+    function __construct()
+    {
+        $this->middleware('auth');
     }
 
-    function save(request $request){
+    function index()
+    {
+        $data['pengaturan'] = \DB::table('pengaturan')->where('id', 1)->first();
+        return view('pengaturan', $data);
+    }
 
-        if($request->hasFile('logo')){
+    function save(request $request)
+    {
+
+        if ($request->hasFile('logo')) {
             //upload foto
             $file = $request->file('logo');
             $fileName = $file->getClientOriginalName();
             $destionationPath = 'uploads';
-            $file->move($destionationPath,$fileName);
+            $file->move($destionationPath, $fileName);
 
             $data = [
                 'nama_perusahaan'   => $request->nama_perusahaan,
@@ -27,8 +34,7 @@ class SettingController extends Controller
                 'no_telepon'        => $request->no_telepon,
                 'logo'              => $fileName
             ];
-
-        }else{
+        } else {
             //tidak upload foto
             $data = [
                 'nama_perusahaan'   => $request->nama_perusahaan,
@@ -38,7 +44,7 @@ class SettingController extends Controller
             ];
         }
 
-        \DB::table('pengaturan')->where('id',1)->update($data);
-        return redirect('pengaturan')->with('message','Berhasil Edit Profil Instansi..!!');
+        \DB::table('pengaturan')->where('id', 1)->update($data);
+        return redirect('pengaturan')->with('message', 'Berhasil Edit Profil Instansi..!!');
     }
 }

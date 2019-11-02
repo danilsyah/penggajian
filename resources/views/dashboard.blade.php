@@ -23,9 +23,9 @@
         <!-- small box -->
         <div class="small-box bg-green">
           <div class="inner">
-            <h3>53<sup style="font-size: 20px">%</sup></h3>
+          <h3>{{$jmlKehadiran[0]->jml_kehadiran}} Org</h3>
 
-            <p>Riwayat Kehadiran</p>
+            <p>Kehadiran</p>
           </div>
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
@@ -38,7 +38,7 @@
         <!-- small box -->
         <div class="small-box bg-yellow">
           <div class="inner">
-            <h3>44</h3>
+            <h3>{{$jmlKaryawan}} Org</h3>
 
             <p>Karyawan</p>
           </div>
@@ -53,9 +53,9 @@
         <!-- small box -->
         <div class="small-box bg-red">
           <div class="inner">
-            <h3>65</h3>
+          <h3>{{$totalLembur[0]->total}} Org</h3>
 
-            <p>Riwayat Lembur</p>
+            <p>Lembur</p>
           </div>
           <div class="icon">
             <i class="ion ion-pie-graph"></i>

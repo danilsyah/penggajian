@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Karyawan;
+use App\Gaji;
 use Redirect;
 
 class LemburController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     function index()
     {
         if (session('periodeLembur')) {
@@ -34,6 +40,7 @@ class LemburController extends Controller
     function create()
     {
         $data['karyawan'] = Karyawan::pluck('nama', 'nik');
+        $data['periodeGaji'] = Gaji::pluck('periode', 'periode');
         return view('lembur.create', $data);
     }
 
@@ -45,6 +52,7 @@ class LemburController extends Controller
             'tanggal_pulang' => 'required',
             'jam_masuk'      => 'required',
             'jam_pulang'     => 'required',
+            'periode'       => 'required',
             // 'durasi_lembur'  => 'required',
         ]);
 
@@ -90,7 +98,8 @@ class LemburController extends Controller
                 'tanggal_pulang'        => $request->tanggal_pulang . ' ' . $request->jam_pulang,
                 'durasi_lembur'         => $durasiLembur,
                 'kalender_kerja_id'     => $keteranganKalenderKerja,
-                'upah'                  => (int) $upahLembur // casting / merubah variable menjadi tipe data int
+                'upah'                  => (int) $upahLembur, // casting / merubah variable menjadi tipe data int
+                'periode'               => $request->periode
             ];
             \DB::table('lembur')->insert($data);
             return Redirect('/lembur')->with('message', 'Data Lembur Dengan Nama ' . $request->nama . ' Berhasil Di Simpan');

@@ -10,6 +10,11 @@ use App\Kehadiran;
 
 class GajiController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     function index()
     {
         $periodeGaji = Session('periode_gaji');
@@ -79,6 +84,14 @@ class GajiController extends Controller
         return redirect('gaji/' . $request->gaji_id)->with('message', 'Komponen Gaji Berhasil Di Tambah');
     }
 
+    function updateTotalGaji(Request $request, $id)
+    {
+        $gaji = Gaji::find($id);
+        $gaji->total_gaji = $request->totalGaji;
+        $gaji->update();
+        return redirect('gaji/' . $id);
+    }
+
     function hapusKomponenGajiDetail($id)
     {
         $gaji = \DB::table('gaji_detail')->where('id', $id)->first();
@@ -97,59 +110,44 @@ class GajiController extends Controller
             ->where('karyawan.nik', $gaji->nik)
             ->first();
         $pengaturan             = \DB::table('pengaturan')->where('id', 1)->first();;
-
         $periode_tahun = substr($gaji->periode, 0, 4);
         $periode_bulan = substr($gaji->periode, 4, 2);
-
         $periode_sekarang = bulan(substr($gaji->periode, 4, 2)) . ' / ' . substr($gaji->periode, 0, 4);
-
         // $periode_bln_depan = '01/' . date('m-Y', strtotime('+1 month', strtotime('2019-04')));
-
         Fpdf::AddPage('L', 'A5');
         Fpdf::SetFont('Arial', 'B', 14);
-        Fpdf::Cell(190, 7, 'SLIP GAJI KARYAWAN', 1, 1, 'C');
-        Fpdf::Cell(190, 16, '', 1, 1, 'C');
+        Fpdf::Image('uploads/' . $pengaturan->logo, 12, 8, 25, 15);
+        Fpdf::Cell(190, 12, 'SLIP GAJI KARYAWAN', 0, 0, 'C');
+        Fpdf::line(12, 25, 210 - 20, 25);
+        // Fpdf::Cell(190, 16, '', 1, 1, 'C');
         Fpdf::SetFont('Arial', 'B', 8);
-
-        Fpdf::text(12, 22, 'Nama Perusahaan');
-        Fpdf::text(38, 22, ' : ' . $pengaturan->nama_perusahaan);
-        Fpdf::text(12, 26, 'Periode');
-        Fpdf::text(38, 26, ' : ' . $periode_sekarang);
-        Fpdf::text(12, 30, 'Departemen');
-        Fpdf::text(38, 30, ' : ' . $karyawan->nama_departemen);
-
-
-        Fpdf::text(110, 22, 'NIK');
-        Fpdf::text(136, 22, ' : ' . $karyawan->nik);
-        Fpdf::text(110, 26, 'Nama Karyawan');
-        Fpdf::text(136, 26, ' : ' . $karyawan->nama);
-        Fpdf::text(110, 30, 'Jabatan');
-        Fpdf::text(136, 30, ' : ' . $karyawan->nama_jabatan);
-
-        Fpdf::Cell(190, 90, '', 1, 1, 'C');
+        Fpdf::text(12, 29, 'Nama Perusahaan');
+        Fpdf::text(38, 29, ' : ' . $pengaturan->nama_perusahaan);
+        Fpdf::text(12, 33, 'Periode');
+        Fpdf::text(38, 33, ' : ' . $periode_sekarang);
+        Fpdf::text(12, 37, 'Departemen');
+        Fpdf::text(38, 37, ' : ' . $karyawan->nama_departemen);
+        Fpdf::text(110, 29, 'NIK');
+        Fpdf::text(136, 29, ' : ' . $karyawan->nik);
+        Fpdf::text(110, 33, 'Nama Karyawan');
+        Fpdf::text(136, 33, ' : ' . $karyawan->nama);
+        Fpdf::text(110, 37, 'Jabatan');
+        Fpdf::text(136, 37, ' : ' . $karyawan->nama_jabatan);
+        // Fpdf::Cell(190, 90, '', 1, 1, 'C');
         // ---------------------------------------
-        Fpdf::text(12, 40, 'Penerimaan ( +)');
-        Fpdf::line(12, 75, 210 - 20, 75);
-        Fpdf::line(12, 42, 110 - 20, 42);
-        Fpdf::line(110, 42, 210 - 20, 42);
-
-
-        // KALKULASI KOMPONEN GAJI --------------------------
-
+        Fpdf::text(12, 44, 'Penerimaan ( +)');
+        Fpdf::line(12, 79, 210 - 20, 79);
+        Fpdf::line(12, 46, 110 - 20, 46);
+        Fpdf::line(110, 46, 210 - 20, 46);
+        // KALKULASI KOMPONEN GAJI -------------------------
         $total_penerimaan = 0;
         $total_potongan = 0;
-
         $jml_kehadiran = hitungJmlKehadiran($karyawan->nik, $periode_tahun . '-' . $periode_bulan);
-
-
         // gaji pokok harian
-        $gph = $karyawan->gaji_pokok / 24;
+        $gph = $karyawan->gaji_pokok / 20;
         // gaji berdasarkan kehadiran
         $gbh = $gph * $jml_kehadiran;
         $total_penerimaan = $total_penerimaan + $gbh;
-
-
-
         $penerimaan = [
             [
                 'kode_komponen' => 'GP',
@@ -167,12 +165,7 @@ class GajiController extends Controller
                 'nilai' => $gbh
             ]
         ];
-
-
-
         $potongan = [];
-
-
         // =============== KOMPONEN GAJI DETAIL ======================
         $gaji_detail =  \DB::table('gaji_detail')
             ->join('komponen_gaji', 'komponen_gaji.kode_komponen', '=', 'gaji_detail.kode_komponen')
@@ -188,18 +181,14 @@ class GajiController extends Controller
                 array_push($potongan, $komponen_baru);
             }
         }
-
         // ============== HITUNG LEMBUR ==============================================
         $hitungLembur = \DB::select("select sum(upah) as upah 
                              from lembur where left(tanggal_masuk,7)='" . $periode_tahun . '-' . $periode_bulan . "' 
                              and nik='" . $gaji->nik . "'");
         $upahLembur   = $hitungLembur[0]->upah;
-
         $lembur = ['kode_komponen' => 'LBR', 'nama_komponen' => 'Upah Lembur', 'nilai' => $upahLembur];
         array_push($penerimaan, $lembur);
-
-
-        $start = 48;
+        $start = 52;
         foreach ($penerimaan as $p) {
             Fpdf::text(12, $start, $p['kode_komponen']);
             Fpdf::text(24, $start, $p['nama_komponen']);
@@ -211,11 +200,9 @@ class GajiController extends Controller
 
             $start = $start + 5;
         }
-
         //////////////////////////////////////////////////////////////////////
-
-        Fpdf::text(110, 40, 'Potongan ( -)');
-        $start = 48;
+        Fpdf::text(110, 44, 'Potongan ( -)');
+        $start = 52;
         foreach ($potongan as $pt) {
             //dd($pt);
             Fpdf::text(110, $start, $pt['kode_komponen']);
@@ -224,39 +211,16 @@ class GajiController extends Controller
             $start = $start + 5;
             $total_potongan = $total_potongan + $pt['nilai'];
         }
-
-        Fpdf::text(12, 82, 'Total Penerimaan');
-        Fpdf::text(74, 82, ': ' . rupiah($total_penerimaan));
-
-        Fpdf::text(12, 86, 'Gaji Yang Diterima');
-        Fpdf::text(74, 86, ': ' . (rupiah($total_penerimaan - $total_potongan)));
-
-        Fpdf::text(12, 90, '---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
-
-
-        // Fpdf::text(12, 96, 'Nama Perusahaan');
-        // Fpdf::text(42, 96, ' : ' . $pengaturan->nama_perusahaan);
-        // Fpdf::text(12, 100, 'Periode');
-        // Fpdf::text(42, 100, ' : ' . $periode_sekarang . ' - ' . $periode_bln_depan);
-        // Fpdf::text(12, 104, 'Departemen');
-        // Fpdf::text(42, 104, ' : HRD/ Admin');
-
-
-        // Fpdf::text(12, 108, 'NIK');
-        // Fpdf::text(42, 108, ' : ' . $karyawan->nik);
-        // Fpdf::text(12, 112, 'Nama Karyawan');
-        // Fpdf::text(42, 112, ' : ' . $karyawan->nama);
-        // Fpdf::text(12, 116, 'Jabatan');
-        // Fpdf::text(42, 116, ' : ' . $karyawan->nama_jabatan);
-
-
-
-        Fpdf::text(120, 96, 'Diserahkan Oleh');
-        Fpdf::text(125, 116, 'Admin');
-        Fpdf::text(12, 120, 'Tgl Cetak : ' . date('d/m/Y : H:i:s'));
-        Fpdf::text(160, 96, 'Diterima Oleh');
-        Fpdf::text(163, 116, $karyawan->nama);
-
+        Fpdf::text(12, 86, 'Total Penerimaan');
+        Fpdf::text(74, 86, ': ' . rupiah($total_penerimaan));
+        Fpdf::text(12, 90, 'Gaji Yang Diterima');
+        Fpdf::text(74, 90, ': ' . (rupiah($total_penerimaan - $total_potongan)));
+        Fpdf::text(12, 94, '---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+        Fpdf::text(120, 100, 'Diserahkan Oleh');
+        Fpdf::text(125, 120, 'Admin');
+        Fpdf::text(12, 124, 'Tgl Cetak : ' . date('d/m/Y : H:i:s'));
+        Fpdf::text(160, 100, 'Diterima Oleh');
+        Fpdf::text(163, 120, $karyawan->nama);
         Fpdf::Output();
         exit;
     }
@@ -297,15 +261,22 @@ class GajiController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
-
-        $data['periode'] = $bulan . '/' . $tahun;
+        $periode = $tahun . '' . $bulan;
+        // dd(bulan($bulan));
+        $data['periode'] = bulan($bulan) . ' - ' . $tahun;
         $data['pengaturan'] = \DB::table('pengaturan')->where('id', 1)->first();
-        $data['karyawan'] = \DB::table('karyawan')
+        $data['gaji'] = \DB::table('gaji')
+            ->join('karyawan', 'gaji.nik', '=', 'karyawan.nik')
             ->join('jabatan', 'jabatan.kode_jabatan', '=', 'karyawan.kode_jabatan')
             ->join('departemen', 'departemen.kode_departemen', '=', 'karyawan.kode_departemen')
-            ->join('kehadiran', 'kehadiran.nik', '=', 'karyawan.nik')
-            ->groupBy('karyawan.nik')
+            ->where('gaji.periode', '=', $tahun . '' . $bulan)
+            ->orderBy('karyawan.nama')
             ->get();
+
+        // $data['totalGaji'] = \DB::select("select sum(total_gaji) as totalgaji from gaji
+        // where periode  = '" . $periode . "'");
+        $data['totalGaji'] = \DB::table('gaji')->where('periode', $periode)->sum('total_gaji');
+        // dd($data['gaji']);
         $pdf = \PDF::loadView('gaji.laporan_gaji', $data);
         return $pdf->stream('laporan_gaji_' . $tahun . '_' . $bulan);
     }
