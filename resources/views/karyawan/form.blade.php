@@ -107,7 +107,16 @@
     </tr>
     <tr>
         <td><b>Upload Foto</b></td>
-        <td>{{Form::file('foto')}}</td>
+        <td>
+            <div class="row">
+                <div class="col-md-3">
+                    {{Form::file('foto')}}
+                </div>
+                <div class="col-md-4">
+                    <h5>*(Max Size 500KB)</h5>
+                </div>
+            </div>
+        </td>
     </tr>
     <tr>
         <td></td>

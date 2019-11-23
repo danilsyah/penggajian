@@ -15,13 +15,14 @@
     </div>
     <div class="col-md-6">
         {!! Form::open(['url'=>'tambah-kelompok-kerja']) !!}
-        {!! Form::hidden('id', $kelompokKerja->id) !!}
-        <table class="table table-hover">
-            <tr>
-                <td>{!! Form::text('nama', null, ['list'=>'karyawan','class'=>'form-control', 'placeholder'=>'Cari Nama atau Nik Karyawan']) !!}</td>
-                <td><button type="submit" class="btn btn-bitbucket">Tambah Anggota</button></td>
-            </tr>
-        </table>
+            {!! Form::hidden('id', $kelompokKerja->id) !!}
+            <table class="table table-hover">
+                <tr>
+                    <td>{!! Form::select('nik', $karyawan,null, ['class'=>'form-control select2']) !!}</td>
+                    {{-- <td>{!! Form::text('nama', null, ['list'=>'karyawan','class'=>'form-control', 'placeholder'=>'Cari Nama atau Nik Karyawan']) !!}</td> --}}
+                    <td><button type="submit" class="btn btn-bitbucket">Tambah Anggota</button></td>
+                </tr>
+            </table>
         {!! Form::close() !!}
     </div>
 </div>
@@ -56,13 +57,13 @@
     </div>
 </div>
 
-<datalist id="karyawan">
+{{-- <datalist id="karyawan">
     @foreach ($karyawan as $row)
         <option value="{{$row->nama}}">
         {{ $nikKaryawan ='NIK : '. $row->nik }}
         </option>
     @endforeach
-</datalist>
+</datalist> --}}
 
 @endsection
 @push('script')

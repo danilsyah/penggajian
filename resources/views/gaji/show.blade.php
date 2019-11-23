@@ -26,8 +26,8 @@
         {!! Form::hidden('gaji_id', $gaji->id) !!}
         <table class="table table-hover">
             <tr>
-                <td>{!! Form::select('kode_komponen', $komponenGaji, null, ['class'=>'form-control select2']) !!}</td>
-                <td><button type="submit" class="btn btn-primary">Tambah</button></td>
+                <td width=500>{!! Form::select('kode_komponen', $komponenGaji, null, ['class'=>'form-control select2']) !!}</td>
+                <td><button type="submit" class="btn btn-primary">Tambah</button> / <a href="/gaji/{{$gaji->id}}/pdf" class="btn btn-success">Download Slip Gaji</a></td>
             </tr>
         </table>
         {!! Form::close() !!}
@@ -100,6 +100,7 @@
                 {!! Form::hidden('totalGaji', $total) !!}
                 <td><button type="submit" class="btn btn-primary">Submit</button></td>
                 {!! Form::close() !!}
+               
             </tr>
         </table>
     </div>
@@ -158,7 +159,7 @@
                 </div>
             </div>
             <div class="panel panel-footer">
-                <strong>Keterangan = H : Hadir , I : Ijin , C : Cuti , A : Alfa , S : Sakit</strong>
+                <strong>Keterangan = H : Hadir , I : Ijin , C : Cuti , A : Alfa , S : Sakit</strong><br>
             </div>
         </div>
     </div>

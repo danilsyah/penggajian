@@ -72,11 +72,11 @@
           <table class="table table-bordered">
               <tr>
                   <td>Dari Tanggal</td>
-                  <td>{!! Form::date('tanggal_mulai', null, ['class'=>'form-control']) !!}</td>
+                  <td>{!! Form::date('tanggal_mulai', null, ['class'=>'form-control','required'=>'yes']) !!}</td>
               </tr>
               <tr>
                 <td>Sampai Tanggal</td>
-                <td>{!! Form::date('tanggal_selesai', null, ['class'=>'form-control']) !!}</td>
+                <td>{!! Form::date('tanggal_selesai', null, ['class'=>'form-control','required'=>'yes']) !!}</td>
             </tr>
             <tr>
                 <td></td>
@@ -107,7 +107,16 @@
              <table class="table table-bordered">
                  <tr>
                      <td>Upload File</td>
-                     <td>{!! Form::file('file', ['class'=>'form-control']) !!}</td>
+                     <td>
+                      <div class="row">
+                        <div class="col-md-6">
+                            {!! Form::file('file', ['class'=>'form-control','required'=>'yes']) !!}
+                        </div>  
+                        <div class="col-md-6">
+                            *Format : csv,xlsx,xls
+                        </div>
+                      </div> 
+                  </td>
                  </tr>
                  <tr>
                      <td></td>

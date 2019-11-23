@@ -33,12 +33,18 @@ class KehadiranController extends Controller
                 ->get();
         } else {
             $data['kehadiran'] = Karyawan::select('karyawan.nik', 'karyawan.nama', 'departemen.nama_departemen', 'kehadiran.id', 'kehadiran.tanggal_masuk', 'kehadiran.tanggal_pulang', 'status_kehadiran.status_kehadiran')
-                ->leftJoin('kehadiran', 'kehadiran.nik', '=', 'karyawan.nik')
+                ->leftJoin('kehadiran', function ($join) {
+                    $periode = session('periodeKehadiran');
+                    $join->on('kehadiran.nik', '=', 'karyawan.nik')
+                        ->whereRaw('month(kehadiran.tanggal_masuk) = ?', date('m'))
+                        ->whereRaw('year(kehadiran.tanggal_masuk) = ?', date('Y'));
+                })
                 ->leftJoin('status_kehadiran', 'kehadiran.kode_status_kehadiran', '=', 'status_kehadiran.kode_status_kehadiran')
                 ->join('departemen', 'karyawan.kode_departemen', '=', 'departemen.kode_departemen')
                 ->orderby('tanggal_masuk', 'asc')
                 ->get();
         }
+        session()->forget('periodeKehadiran');
         return view('kehadiran.index', $data);
         // return date(now());
     }
@@ -92,6 +98,10 @@ class KehadiranController extends Controller
 
     function exportExcel(Request $request)
     {
+        $request->validate([
+            'tanggal_mulai' => 'required',
+            'tanggal_selesai' => 'required'
+        ]);
         $awal = $request->tanggal_mulai;
         $akhir = $request->tanggal_selesai;
         return Excel::download(new KehadiranExport($awal, $akhir), 'laporan_kehadiran.xlsx');
@@ -99,11 +109,16 @@ class KehadiranController extends Controller
 
     function importExcel(Request $request)
     {
+        $request->validate([
+            'file'          => 'required|mimes:xlsx,xls,csv'
+        ]);
         $file       = $request->file('file');
         $fileName   = $file->getClientOriginalName();
         $destionationPath = 'uploads';
         $file->move($destionationPath, $fileName);
 
+        // $karyawan['karyawan'] = \DB::table('karyawan')
+        // dd($file);
         Excel::import(new KehadiranImport, public_path() . '/uploads/' . $fileName);
         return redirect('kehadiran')->with('message', 'Laporan Absensi Berhasil di Import ke Sistem');
     }

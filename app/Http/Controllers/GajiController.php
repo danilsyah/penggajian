@@ -32,6 +32,7 @@ class GajiController extends Controller
 
     function store(Request $request)
     {
+        // dd($request->periode);
         $request->validate([
             'periode' => 'required'
         ]);
@@ -56,7 +57,9 @@ class GajiController extends Controller
     {
         $gaji = Gaji::find($id);
         $data['gaji'] = $gaji;
-        $periode = substr($gaji->periode, 0, 4) . '-' . substr($gaji->periode, 4, 2);
+        // $periode = substr($gaji->periode, 0, 4) . '-' . substr($gaji->periode, 4, 2);
+        $periode = $gaji->periode;
+        // dd($periode);
         $data['komponenGaji'] = KomponenGaji::pluck('nama_komponen', 'kode_komponen');
 
         $data['karyawan'] = \DB::table('karyawan')
@@ -111,8 +114,8 @@ class GajiController extends Controller
             ->first();
         $pengaturan             = \DB::table('pengaturan')->where('id', 1)->first();;
         $periode_tahun = substr($gaji->periode, 0, 4);
-        $periode_bulan = substr($gaji->periode, 4, 2);
-        $periode_sekarang = bulan(substr($gaji->periode, 4, 2)) . ' / ' . substr($gaji->periode, 0, 4);
+        $periode_bulan = substr($gaji->periode, 5, 2);
+        $periode_sekarang = bulan(substr($gaji->periode, 5, 2)) . ' / ' . substr($gaji->periode, 0, 4);
         // $periode_bln_depan = '01/' . date('m-Y', strtotime('+1 month', strtotime('2019-04')));
         Fpdf::AddPage('L', 'A5');
         Fpdf::SetFont('Arial', 'B', 14);
@@ -144,10 +147,11 @@ class GajiController extends Controller
         $total_potongan = 0;
         $jml_kehadiran = hitungJmlKehadiran($karyawan->nik, $periode_tahun . '-' . $periode_bulan);
         // gaji pokok harian
-        $gph = $karyawan->gaji_pokok / 20;
+        // $gph = $karyawan->gaji_pokok / 20;
+        $gp = $karyawan->gaji_pokok;
         // gaji berdasarkan kehadiran
-        $gbh = $gph * $jml_kehadiran;
-        $total_penerimaan = $total_penerimaan + $gbh;
+        // $gbh = $gph * $jml_kehadiran;
+        $total_penerimaan = $total_penerimaan + $gp;
         $penerimaan = [
             [
                 'kode_komponen' => 'GP',
@@ -155,15 +159,21 @@ class GajiController extends Controller
                 'nilai' => $karyawan->gaji_pokok
             ],
             [
-                'kode_komponen' => 'GPH',
-                'nama_komponen' => 'Gaji Pokok Harian',
-                'nilai' => $gph
-            ],
-            [
-                'kode_komponen' => 'GBH',
-                'nama_komponen' => 'Gaji Berdasarkan Kehadiran (' . $jml_kehadiran . ')',
-                'nilai' => $gbh
+                'kode_komponen' => 'TJB',
+                'nama_komponen' => 'Tunjangan Jabatan',
+                'nilai' => $karyawan->tunjangan_jabatan
             ]
+            // ,
+            // [
+            //     'kode_komponen' => 'GPH',
+            //     'nama_komponen' => 'Gaji Pokok Harian',
+            //     'nilai' => $gph
+            // ],
+            // [
+            //     'kode_komponen' => 'GBH',
+            //     'nama_komponen' => 'Gaji Berdasarkan Kehadiran (' . $jml_kehadiran . ')',
+            //     'nilai' => $gbh
+            // ]
         ];
         $potongan = [];
         // =============== KOMPONEN GAJI DETAIL ======================
@@ -225,43 +235,40 @@ class GajiController extends Controller
         exit;
     }
 
-    function slipGajiPdf($id)
-    {
-        date_default_timezone_set("Asia/Jakarta");
-        $data['pengaturan']     = \DB::table('pengaturan')->where('id', 1)->first();
+    // function slipGajiPdf($id)
+    // {
+    //     date_default_timezone_set("Asia/Jakarta");
+    //     $data['pengaturan']     = \DB::table('pengaturan')->where('id', 1)->first();
 
-        $data['komponenGaji']   = KomponenGaji::pluck('nama_komponen', 'kode_komponen');
-        $gaji                   = Gaji::find($id);
+    //     $data['komponenGaji']   = KomponenGaji::pluck('nama_komponen', 'kode_komponen');
+    //     $gaji                   = Gaji::find($id);
 
-        $periode                = substr($gaji->periode, 0, 4) . '-' . substr($gaji->periode, 4, 2);
-        $data['gaji']           = $gaji;
+    //     $periode                = substr($gaji->periode, 0, 4) . '-' . substr($gaji->periode, 4, 2);
+    //     $data['gaji']           = $gaji;
 
-        $data['karyawan']       = \DB::table('karyawan')
-            ->join('jabatan', 'karyawan.kode_jabatan', '=', 'jabatan.kode_jabatan')
-            ->where('karyawan.nik', $gaji->nik)
-            ->first();
+    //     $data['karyawan']       = \DB::table('karyawan')
+    //         ->join('jabatan', 'karyawan.kode_jabatan', '=', 'jabatan.kode_jabatan')
+    //         ->where('karyawan.nik', $gaji->nik)
+    //         ->first();
 
-        $data['gajiDetail']     = \DB::table('gaji_detail')
-            ->join('komponen_gaji', 'komponen_gaji.kode_komponen', '=', 'gaji_detail.kode_komponen')
-            ->where('gaji_detail.gaji_id', $id)
-            ->get();
+    //     $data['gajiDetail']     = \DB::table('gaji_detail')
+    //         ->join('komponen_gaji', 'komponen_gaji.kode_komponen', '=', 'gaji_detail.kode_komponen')
+    //         ->where('gaji_detail.gaji_id', $id)
+    //         ->get();
 
-        $data['hitungLembur']   = $data['upahLembur']   = \DB::select("select sum(upah) as upah from lembur 
-                                where left(tanggal_masuk,7) = '" . $periode . "' 
-                                and nik = '" . $gaji->nik . "' ");
-
-
-
-        $data['periode']        = $periode;
-        $pdf = \PDF::loadView('gaji.slipgaji', $data);
-        return $pdf->stream('slip_gaji.pdf');
-    }
+    //     $data['hitungLembur']   = $data['upahLembur']   = \DB::select("select sum(upah) as upah from lembur 
+    //                             where left(tanggal_masuk,7) = '" . $periode . "' 
+    //                             and nik = '" . $gaji->nik . "' ");
+    //     $data['periode']        = $periode;
+    //     $pdf = \PDF::loadView('gaji.slipgaji', $data);
+    //     return $pdf->stream('slip_gaji.pdf');
+    // }
 
     function laporanGaji(Request $request)
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
-        $periode = $tahun . '' . $bulan;
+        $periode = $tahun . '-' . $bulan;
         // dd(bulan($bulan));
         $data['periode'] = bulan($bulan) . ' - ' . $tahun;
         $data['pengaturan'] = \DB::table('pengaturan')->where('id', 1)->first();
@@ -269,7 +276,7 @@ class GajiController extends Controller
             ->join('karyawan', 'gaji.nik', '=', 'karyawan.nik')
             ->join('jabatan', 'jabatan.kode_jabatan', '=', 'karyawan.kode_jabatan')
             ->join('departemen', 'departemen.kode_departemen', '=', 'karyawan.kode_departemen')
-            ->where('gaji.periode', '=', $tahun . '' . $bulan)
+            ->where('gaji.periode', '=', $periode)
             ->orderBy('karyawan.nama')
             ->get();
 

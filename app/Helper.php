@@ -72,3 +72,15 @@ function zonaWaktu()
 {
     return date_default_timezone_set("Asia/Jakarta");
 }
+
+function upahPerJam($gajiPokok)
+{
+    $upahPerJam = $gajiPokok / 173;
+    return $upahPerJam;
+}
+
+function upahPerHari($gajiPokok)
+{
+    $upahPerHari = $gajiPokok / 21;
+    return $upahPerHari;
+}

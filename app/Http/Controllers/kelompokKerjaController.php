@@ -7,6 +7,7 @@ use App\KelompokKerja;
 use Illuminate\Support\Facades\Redirect;
 use App\PolaKerja;
 use PhpParser\Node\Stmt\Foreach_;
+use App\Karyawan;
 
 class kelompokKerjaController extends Controller
 {
@@ -63,7 +64,8 @@ class kelompokKerjaController extends Controller
     // pengolahan data anggota kelompok kerja
     public function show($id)
     {
-        $data['karyawan'] = \DB::table('karyawan')->get();
+        $data['karyawan'] = Karyawan::pluck('nama', 'nik');
+        // $data['karyawan'] = \DB::table('karyawan')->get();
         $data['kelompokKerja'] = KelompokKerja::find($id);
         $data['anggota'] = \DB::table('anggota_kelompok_kerja')
             ->join('karyawan', 'karyawan.nik', '=', 'anggota_kelompok_kerja.nik')
@@ -75,10 +77,10 @@ class kelompokKerjaController extends Controller
     public function tambahAnggota(Request $request)
     {
 
-        if ($request->nama == null) {
+        if ($request->nik == null) {
             return Redirect('kelompokkerja/' . $request->id)->with('message', 'Anda Belum Meng-Input Karyawan ');
         } else {
-            $karyawan = \DB::table('karyawan')->where('nama', $request->nama)->first();
+            $karyawan = \DB::table('karyawan')->where('nik', $request->nik)->first();
             $anggota = \DB::table('anggota_kelompok_kerja')
                 ->join('kelompok_kerja', 'kelompok_kerja.id', '=', 'anggota_kelompok_kerja.kelompok_kerja_id')
                 ->where('nik', $karyawan->nik)->first();
@@ -86,11 +88,11 @@ class kelompokKerjaController extends Controller
             if ($anggota == null || $anggota->nik != $karyawan->nik) {
                 $data = ['nik' => $karyawan->nik, 'kelompok_kerja_id' => $request->id];
                 \DB::table('anggota_kelompok_kerja')->insert($data);
-                return Redirect('kelompokkerja/' . $request->id)->with('message', 'Data Anggota : ' . $request->nama . ' Berhasil Ditambahkan');
+                return Redirect('kelompokkerja/' . $request->id)->with('message', 'Data Anggota : ' . $karyawan->nama . ' Berhasil Ditambahkan');
             } else if ($anggota->nik == $karyawan->nik) {
-                return Redirect('kelompokkerja/' . $request->id)->with('message', 'Data Karyawan : ' . $request->nama . ' Sudah Masuk Anggota Kelompok Kerja : ' . $anggota->kelompok_kerja);
+                return Redirect('kelompokkerja/' . $request->id)->with('message', 'Data Karyawan : ' . $karyawan->nama . ' Sudah Masuk Anggota Kelompok Kerja : ' . $anggota->kelompok_kerja);
             } else {
-                return Redirect('kelompokkerja/' . $request->id)->with('message', 'Data Karyawan : ' . $request->nama . ' Tidak Ditemukan ');
+                return Redirect('kelompokkerja/' . $request->id)->with('message', 'Data Karyawan : ' . $karyawan->nama . ' Tidak Ditemukan ');
             }
         }
 
@@ -172,6 +174,10 @@ class kelompokKerjaController extends Controller
 
     public function simpanPolaKerja(Request $request)
     {
+        $request->validate([
+            'dari_tanggal'   => 'required',
+            'sampai_tanggal' => 'required'
+        ]);
         // proses simpan data pola kerja kelompok karyawan
         $dataPolaKerja = [];
         $period = new \DatePeriod(
@@ -179,7 +185,6 @@ class kelompokKerjaController extends Controller
             new \DateInterval('P1D'),
             new \DateTime(date('Y-m-d', strtotime('1 day', strtotime($request->sampai_tanggal))))
         );
-
         foreach ($period as $key => $value) {
             $dataPolaKerja[] = [
                 'tanggal'           => $value->format('Y-m-d'),
@@ -190,7 +195,6 @@ class kelompokKerjaController extends Controller
             ];
         }
         \DB::table('pola_kerja_kelompok_karyawan')->insert($dataPolaKerja);
-
         // proses simpan data pola kerja karyawan 
         $polaKerjaKaryawan = [];
         $karyawan = \DB::table('anggota_kelompok_kerja')
@@ -206,10 +210,7 @@ class kelompokKerjaController extends Controller
                 ];
             }
         }
-
         \DB::table('pola_kerja_karyawan')->insert($polaKerjaKaryawan);
-
-
         return redirect('kelompokkerja/' . $request->kelompok_kerja_id . '/polakerja')->with('message', 'Data Pola Kerja Kelompok Kerja Karyawan Berhasil di Tambah');
     }
 

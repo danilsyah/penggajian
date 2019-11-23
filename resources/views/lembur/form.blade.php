@@ -1,9 +1,6 @@
 
 <table class="table table-bordered">
-    <tr>
-        <td><b>Periode</b></td>
-        <td>{!! Form::select('periode', $periodeGaji, null, ['class'=>'form-control']) !!}</td>
-    </tr>
+    {!! Form::hidden('periode',$periode,null) !!}
     <tr>
         <td width="200"><b>Nama Karyawan</b></td>
         <td>
@@ -16,12 +13,12 @@
         <td>
             <div class="row">
                 <div class="col-md-3">
-                    {!! Form::date('tanggal_masuk',null, ['class'=>'form-control','id'=>'tgl_masuk']) !!}
+                    {!! Form::date('tanggal_masuk',null, ['class'=>'form-control','id'=>'tgl_masuk','required'=>'yes']) !!}
                 </div>
                 <div class="col-md-3">
                     {{-- {!! Form::text('jam_masuk', null, ['class'=>'form-control','placeholder'=>'Format Jam = 00:00']) !!} --}}
                     <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
-                        <input type="text" class="form-control" value="" name="jam_masuk" placeholder="Input Waktu Masuk">
+                        <input type="text" class="form-control" value="" name="jam_masuk" placeholder="Waktu Masuk" required='yes'>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-time"></span>
                         </span>
@@ -35,12 +32,12 @@
         <td>
             <div class="row">
                 <div class="col-md-3">
-                    {!! Form::date('tanggal_pulang',null, ['class'=>'form-control','id'=>'tgl_pulang']) !!}
+                    {!! Form::date('tanggal_pulang',null, ['class'=>'form-control','id'=>'tgl_pulang','required'=>'yes']) !!}
                 </div>
                 <div class="col-md-3">
                         {{-- {!! Form::text('jam_pulang', null, ['class'=>'form-control','placeholder'=>'Format Jam = 00:00']) !!} --}}
                         <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
-                            <input type="text" class="form-control" value="" name="jam_pulang" placeholder="Input Waktu Masuk">
+                            <input type="text" class="form-control" value="" name="jam_pulang" placeholder="Waktu Selesai" required='yes'>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-time"></span>
                             </span>

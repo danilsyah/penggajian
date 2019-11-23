@@ -25,7 +25,7 @@
             <th>Tanggal Masuk</th>
             <th>Status Pegawai</th>
             {{-- <th>Gaji Pokok</th> --}}
-            <th>Upah Per Jam</th>
+            {{-- <th>Upah Per Jam</th> --}}
             <th>Foto</th>
             <th>Aksi</th>
         </tr>
@@ -51,7 +51,7 @@
             <td>-</td>
             @endif
             {{-- <td>@currency($row->gaji_pokok)</td> --}}
-            <td>@currency($row->gaji_pokok / 173)</td>
+            {{-- <td>@currency(upahPerHari($row->gaji_pokok))</td> --}}
             <td>
                 @if($row->foto)
                     <img src="{{asset('uploads/'.$row->foto.'')}}"  width="80" alt="Foto Tidak Muncul">

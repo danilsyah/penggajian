@@ -32,8 +32,8 @@
             {!! Form::close() !!}
         </div>
         <div class="col-md-7">
-            <table class="table table-bordered">
-                <tr>
+            <table class="table table-striped">
+                <tr class="success">
                     <th>Tanggal</th>
                     <th>Pola Kerja</th>
                     <th>Jam Masuk</th>

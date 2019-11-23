@@ -9,16 +9,32 @@
             @endif
             <tr>
                 <td><b>Nama Pola Kerja</b></td>
-                <td>{!! Form::text('pola_kerja',null, ['class'=>'form-control','placeholder'=>'Isi Nama Pola Kerja'])!!}
+                <td>{!! Form::text('pola_kerja',null, ['class'=>'form-control','placeholder'=>'Nama Pola Kerja'])!!}
                 </td>
             </tr>
             <tr>
                 <td><b>Jam Masuk</b></td>
-                <td>{!! Form::text('jam_masuk',null, ['class'=>'form-control','placeholder'=>'ex 00:00'])!!}</td>
+                {{-- <td>{!! Form::text('jam_masuk',null, ['class'=>'form-control','placeholder'=>'ex 00:00'])!!}</td> --}}
+                <td>
+                    <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                        <input type="text" class="form-control" value="" name="jam_masuk" placeholder="Waktu Masuk">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                </div>
+                </td>
             </tr>
             <tr>
                 <td><b>Jam Pulang</b></td>
-                <td>{!! Form::text('jam_pulang',null, ['class'=>'form-control','placeholder'=>'ex 00:00'])!!}</td>
+                {{-- <td>{!! Form::text('jam_pulang',null, ['class'=>'form-control','placeholder'=>'ex 00:00'])!!}</td> --}}
+                <td>
+                    <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                        <input type="text" class="form-control" value="" name="jam_pulang" placeholder="Waktu Pulang">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                </div> 
+                </td>
             </tr>
             <tr>
                 <td></td>

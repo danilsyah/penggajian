@@ -34,7 +34,7 @@
                     <td>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true">
                                 Simpan</i></button>
-                        <a href="/departemen" class="btn btn-danger"><i class="fa fa-sign-out" aria-hidden="true">
+                        <a href="/home" class="btn btn-danger"><i class="fa fa-sign-out" aria-hidden="true">
                                 Batal</i></a>
                     </td>
                 </tr>

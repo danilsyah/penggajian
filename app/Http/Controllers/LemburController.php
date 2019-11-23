@@ -31,16 +31,19 @@ class LemburController extends Controller
                 ->select('lembur.*', 'karyawan.nama', 'kalender_kerja.keterangan')
                 ->join('karyawan', 'karyawan.nik', '=', 'lembur.nik')
                 ->leftJoin('kalender_kerja', 'kalender_kerja.id', '=', 'lembur.kalender_kerja_id')
+                ->whereRaw("year(date(lembur.tanggal_masuk)) = ?", date('Y'))
+                ->whereRaw("month(date(lembur.tanggal_masuk)) = ?", date('m'))
                 ->get();
         }
-
+        // dd($data['riwayatLembur']);
         return view('lembur.index', $data);
     }
 
     function create()
     {
         $data['karyawan'] = Karyawan::pluck('nama', 'nik');
-        $data['periodeGaji'] = Gaji::pluck('periode', 'periode');
+        // $data['periodeGaji'] = Gaji::pluck('periode', 'periode');
+        $data['periode'] = date('Ym');
         return view('lembur.create', $data);
     }
 
@@ -102,9 +105,9 @@ class LemburController extends Controller
                 'periode'               => $request->periode
             ];
             \DB::table('lembur')->insert($data);
-            return Redirect('/lembur')->with('message', 'Data Lembur Dengan Nama ' . $request->nama . ' Berhasil Di Simpan');
+            return Redirect('/lembur')->with('message', 'Data Lembur Dengan NIK ' . $request->nik . ' Berhasil Di Simpan');
         } else {
-            return Redirect::back()->with('message', 'Karyawan Dengan Nama ' . $request->nama . ' Tidak Ditemukan');
+            return Redirect::back()->with('message', 'Karyawan Dengan NIK ' . $request->nik . ' Tidak Ditemukan');
         }
     }
 

@@ -29,7 +29,7 @@
             <table class="table table-bordered">
                 <tr>
                     <td width="150">Periode Gaji</td>
-                    <td>{!! Form::text('periode', null, ['class'=>'form-control','placeholder'=>'ex : 201908']) !!}</td>
+                    <td>{!! Form::month('periode', null, ['class'=>'form-control','placeholder'=>'ex : 201908']) !!}</td>
                 </tr>
                 <tr>
                     <td></td>
