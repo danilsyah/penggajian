@@ -26,8 +26,15 @@
         {!! Form::hidden('gaji_id', $gaji->id) !!}
         <table class="table table-hover">
             <tr>
+                @if (Auth::user()->is_admin == 1) 
                 <td width=500>{!! Form::select('kode_komponen', $komponenGaji, null, ['class'=>'form-control select2']) !!}</td>
-                <td><button type="submit" class="btn btn-primary">Tambah</button> / <a href="/gaji/{{$gaji->id}}/pdf" class="btn btn-success">Download Slip Gaji</a></td>
+                @endif
+                <td>
+                    @if (Auth::user()->is_admin==1)
+                    <button type="submit" class="btn btn-primary">Tambah</button> / 
+                    @endif
+                    <a href="/gaji/{{$gaji->id}}/pdf" class="btn btn-success">Download Slip Gaji</a>
+                </td>
             </tr>
         </table>
         {!! Form::close() !!}
@@ -67,10 +74,12 @@
                 <td>{{$row->jenis}}</td>
                 <td>@currency($row->nilai)</td>
                 <td>
+                    @if (Auth::user()->is_admin == 1)
                     {!! Form::open(['url'=>'hapus-komponen-gaji-detail/'.$row->id,'method'=>'delete']) !!}
                     <button type="submit" class="btn btn-danger"
                         onclick="return confirm('Yakin akan di Hapus ?')">Hapus</button>
                     {!! Form::close() !!}
+                    @endif
                 </td>
             </tr>
             <?php
@@ -96,11 +105,12 @@
                 <td><b>TOTAL GAJI</b></td>
                 <td></td>
                 <td class="totalGaji">@currency($total)</td>
+                @if (Auth::user()->is_admin==1)
                 {!! Form::open(['url'=>'totalgaji/'.$gaji->id]) !!}
                 {!! Form::hidden('totalGaji', $total) !!}
                 <td><button type="submit" class="btn btn-primary">Submit</button></td>
                 {!! Form::close() !!}
-               
+                @endif
             </tr>
         </table>
     </div>

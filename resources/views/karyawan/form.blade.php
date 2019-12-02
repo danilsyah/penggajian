@@ -100,7 +100,7 @@
         <td>
             <div class="row">
                 <div class="col-md-4">
-                    {!! Form::select('status_pegawai', ['-Pilih-', 'P'=>'Permanen','K'=>'Kontrak'],null, ['class'=>'form-control select2']) !!}
+                    {!! Form::select('status_pegawai', ['-Pilih-', 'P'=>'Karyawan Tetap','K'=>'Kontrak'],null, ['class'=>'form-control select2']) !!}
                 </div>
             </div>
         </td>

@@ -23,6 +23,7 @@
             {!! Form::close() !!}
 {{-- end filter table --}}
 {{--   --}}
+            @if (Auth::user()->is_admin == 1)
             <h4>Input Periode Gaji</h4>
             <hr>
             {!! Form::open(['url'=>'gaji']) !!}
@@ -37,6 +38,7 @@
                 </tr>
             </table>
             {!! Form::close() !!}
+            @endif
         </div>
         <div class="col-md-8">
             <table class="table table-hover" id="example1">

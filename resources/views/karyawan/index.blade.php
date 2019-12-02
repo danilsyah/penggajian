@@ -44,7 +44,7 @@
             <td>{{$row->nama_departemen}}</td>
             <td>{{$row->tanggal_masuk}}</td>
             @if ($row->status_pegawai == 'P')
-            <td><span class="label label-success">Permanen</span> </td>
+            <td><span class="label label-success">Karyawan Tetap</span> </td>
             @elseif($row->status_pegawai == 'K')
             <td><span class="label label-danger">Kontrak</span></td>
             @else

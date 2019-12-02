@@ -15,10 +15,6 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-// routing page pengaturan
-Route::get('pengaturan', 'SettingController@index');
-Route::post('pengaturan', 'SettingController@save');
-// ---end routing pengaturan--
 // routing modul karyawan
 Route::resource('departemen', 'DepartemenController');
 Route::resource('jabatan', 'JabatanController');
@@ -78,4 +74,9 @@ Route::post('export-laporan-gaji-pdf', 'GajiController@laporanGaji');
 
 Auth::routes();
 
+Route::get('/pengaturan', 'SettingController@index');
+
 Route::get('/home', 'HomeController@index')->name('home');
+
+// router modul user
+Route::resource('user', 'UserController');

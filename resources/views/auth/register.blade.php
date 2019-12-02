@@ -6,11 +6,18 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
             <div class="form-group row">
+                    <label class="col-md-4 control-label">NIK</label>
+                    <div class="col-md-6">
+                        <input type="number" id="nik" class="form-control @error('nik') is-invalid @enderror" name="nik"
+                        required autocomplete="nik" autofocus>
+                    </div>
+            </div>
+            <div class="form-group row">
                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                 <div class="col-md-6">
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                        value="{{ old('name') }}" required autocomplete="name" autofocus>
+                        value="{{ old('name') }}" required autocomplete="name">
 
                     @error('name')
                     <span class="invalid-feedback" role="alert">
@@ -56,6 +63,16 @@
                         required autocomplete="new-password">
                 </div>
             </div>
+            <div class="form-group row">
+                <label class="col-md-4 control-label">Privileges</label>
+                <div class="col-md-6">
+                    <select name="admin" class="form-control">
+                        <option value="">-- Pilih Hak Akses --</option>
+                        <option value="1">Admin</option>
+                        <option value="0">User</option>
+                    </select>
+                </div>
+            </div>
             <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-4">
                     <button type="submit" class="btn btn-primary">
@@ -66,4 +83,5 @@
         </form>
     </div>
 </div>
+
 @endsection

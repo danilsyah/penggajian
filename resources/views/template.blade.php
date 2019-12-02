@@ -49,6 +49,7 @@
                             <li class="active"><a href="/home"><i class="fa fa-tachometer"></i> Dashboard<span
                                         class="sr-only">(current)</span></a>
                             </li>
+                            @if (Auth::user()->is_admin == 1)
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-slideshare"
                                         aria-hidden="true"></i> Modul Karyawan <span class="caret"></span></a>
@@ -73,11 +74,14 @@
                                     <li><a href="/polakerja">Pola Kerja</a></li>
                                 </ul>
                             </li>
+                            @endif
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-btc"
                                         aria-hidden="true"></i> Modul Gaji <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
+                                    @if (Auth::user()->is_admin==1)
                                     <li><a href="/komponenGaji"> Komponen Gaji</a></li>
+                                    @endif
                                     <li><a href="/gaji">Gaji</a></li>
                                 </ul>
                             </li>
@@ -89,8 +93,11 @@
                                             Gaji</a></li>
                                 </ul>
                             </li>
+                            @if (Auth::user()->is_admin==1)
                             <li><a href="/pengaturan"><i class="fa fa-cogs"></i> Pengaturan</a>
-                            <li><a href="{{ route('register') }}"><i class="fa fa-user-plus"></i> User</a>
+                            <li><a href="/user"><i class="fa fa-user-plus"></i> User</a>
+                            {{-- <li><a href="{{ route('register') }}"><i class="fa fa-user-plus"></i> User</a> --}}
+                            @endif
                         </ul>
                     </div>
                     <!-- /.navbar-collapse -->
@@ -114,6 +121,7 @@
                                 <p>
                                     {{Auth::user()->name}}
                                     <small>{{Auth::user()->email}}</small>
+                                    <small>{{Auth::user()->nik}}</small>
                                 </p>
                             </li>
                             <!-- Menu Footer-->

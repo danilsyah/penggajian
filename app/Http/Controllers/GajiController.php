@@ -17,16 +17,25 @@ class GajiController extends Controller
 
     function index()
     {
+        $userNik = \Auth::user()->nik;
         $periodeGaji = Session('periode_gaji');
         if ($periodeGaji == '') {
-            $periode = date('Ym');
+            $periode = date('Y-m');
         } else {
             $periode = $periodeGaji;
         }
         $data['periodeGaji'] = Gaji::pluck('periode', 'periode');
-        $data['riwayatGaji'] = Gaji::join('karyawan', 'gaji.nik', '=', 'karyawan.nik')
-            ->where('gaji.periode', $periode)
-            ->get();
+        if (\Auth::user()->is_admin == 1) {
+            $data['riwayatGaji'] = Gaji::join('karyawan', 'gaji.nik', '=', 'karyawan.nik')
+                ->where('gaji.periode', $periode)
+                ->get();
+        } else {
+            $data['riwayatGaji'] = Gaji::join('karyawan', 'gaji.nik', '=', 'karyawan.nik')
+                ->where('gaji.periode', $periode)
+                ->where('gaji.nik', $userNik)
+                ->get();
+        }
+
         return view('gaji.index', $data);
     }
 
