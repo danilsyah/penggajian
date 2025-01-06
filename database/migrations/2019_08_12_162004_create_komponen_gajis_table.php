@@ -15,8 +15,8 @@ class CreateKomponenGajisTable extends Migration
     {
         Schema::create('komponen_gaji', function (Blueprint $table) {
             // $table->bigIncrements('id');
-            $table->string('kode_komponen', 4)->primary();
-            $table->string('nama_komponen', 40);
+            $table->string('kode_komponen', 255);
+            $table->string('nama_komponen', 255);
             $table->enum('jenis', ['tunjangan', 'potongan']);
             $table->integer('nilai');
             $table->timestamps();

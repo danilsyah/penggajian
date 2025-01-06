@@ -14,8 +14,8 @@ class CreateTableDepartemen extends Migration
     public function up()
     {
         Schema::create('departemen', function (Blueprint $table) {
-            $table->string('kode_departemen',8)->primary();
-            $table->string('nama_departemen');
+            $table->string('kode_departemen', 255);
+            $table->string('nama_departemen', 255);
             $table->timestamps();
         });
     }

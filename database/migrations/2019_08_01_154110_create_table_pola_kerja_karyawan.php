@@ -15,7 +15,7 @@ class CreateTablePolaKerjaKaryawan extends Migration
     {
         Schema::create('pola_kerja_karyawan', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nik', 10);
+            $table->string('nik', 255);
             $table->date('tanggal');
             $table->integer('pola_kerja_id');
             $table->timestamps();

@@ -75,6 +75,7 @@ Route::post('export-laporan-gaji-pdf', 'GajiController@laporanGaji');
 Auth::routes();
 
 Route::get('/pengaturan', 'SettingController@index');
+Route::post('/pengaturan', 'SettingController@save');
 
 Route::get('/home', 'HomeController@index')->name('home');
 

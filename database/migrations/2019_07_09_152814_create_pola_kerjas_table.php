@@ -15,7 +15,9 @@ class CreatePolaKerjasTable extends Migration
     {
         Schema::create('pola_kerja', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('pola_kerja');
+            $table->string('pola_kerja')->nullable();
+            $table->string('jam_masuk', 5)->nullable();
+            $table->string('jam_pulang', 5)->nullable();
             $table->timestamps();
         });
     }

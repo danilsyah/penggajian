@@ -14,7 +14,7 @@ class CreatetableStatusKehadiran extends Migration
     public function up()
     {
         Schema::create('status_kehadiran', function (Blueprint $table) {
-            $table->string('kode_status_kehadiran',4)->primary();
+            $table->string('kode_status_kehadiran', 255);
             $table->string('status_kehadiran');
             $table->timestamps();
         });

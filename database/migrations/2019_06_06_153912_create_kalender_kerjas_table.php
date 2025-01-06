@@ -16,7 +16,7 @@ class CreateKalenderKerjasTable extends Migration
         Schema::create('kalender_kerja', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('tanggal');
-            $table->text('keterangan',50);
+            $table->text('keterangan', 255);
             $table->timestamps();
         });
     }

@@ -14,9 +14,9 @@ class CreateJabatansTable extends Migration
     public function up()
     {
         Schema::create('jabatan', function (Blueprint $table) {
-            $table->string('kode_jabatan',5)->primary();
-            $table->string('nama_jabatan',50);
-            $table->string('tunjangan_jabatan');
+            $table->string('kode_jabatan', 255);
+            $table->string('nama_jabatan', 255);
+            $table->integer('tunjangan_jabatan', 11);
             $table->timestamps();
         });
     }

@@ -81,8 +81,8 @@ class GajiController extends Controller
             ->where('gaji_detail.gaji_id', $id)
             ->get();
 
-        $data['upahLembur']   = \DB::select("select sum(upah) as upah from lembur 
-                                where left(tanggal_masuk,7) = '" . $periode . "' 
+        $data['upahLembur']   = \DB::select("select sum(upah) as upah from lembur
+                                where periode = '" . $periode . "'
                                 and nik = '" . $gaji->nik . "' ");
 
         $data['periode'] = $periode;
@@ -201,8 +201,8 @@ class GajiController extends Controller
             }
         }
         // ============== HITUNG LEMBUR ==============================================
-        $hitungLembur = \DB::select("select sum(upah) as upah 
-                             from lembur where left(tanggal_masuk,7)='" . $periode_tahun . '-' . $periode_bulan . "' 
+        $hitungLembur = \DB::select("select sum(upah) as upah
+                             from lembur where left(tanggal_masuk,7)='" . $periode_tahun . '-' . $periode_bulan . "'
                              and nik='" . $gaji->nik . "'");
         $upahLembur   = $hitungLembur[0]->upah;
         $lembur = ['kode_komponen' => 'LBR', 'nama_komponen' => 'Upah Lembur', 'nilai' => $upahLembur];
@@ -230,9 +230,9 @@ class GajiController extends Controller
             $start = $start + 5;
             $total_potongan = $total_potongan + $pt['nilai'];
         }
-        Fpdf::text(12, 86, 'Total Penerimaan');
+        Fpdf::text(12, 86, 'Total');
         Fpdf::text(74, 86, ': ' . rupiah($total_penerimaan));
-        Fpdf::text(12, 90, 'Gaji Yang Diterima');
+        Fpdf::text(12, 90, 'Diterima');
         Fpdf::text(74, 90, ': ' . (rupiah($total_penerimaan - $total_potongan)));
         Fpdf::text(12, 94, '---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
         Fpdf::text(120, 100, 'Diserahkan Oleh');
@@ -265,8 +265,8 @@ class GajiController extends Controller
     //         ->where('gaji_detail.gaji_id', $id)
     //         ->get();
 
-    //     $data['hitungLembur']   = $data['upahLembur']   = \DB::select("select sum(upah) as upah from lembur 
-    //                             where left(tanggal_masuk,7) = '" . $periode . "' 
+    //     $data['hitungLembur']   = $data['upahLembur']   = \DB::select("select sum(upah) as upah from lembur
+    //                             where left(tanggal_masuk,7) = '" . $periode . "'
     //                             and nik = '" . $gaji->nik . "' ");
     //     $data['periode']        = $periode;
     //     $pdf = \PDF::loadView('gaji.slipgaji', $data);
@@ -277,22 +277,36 @@ class GajiController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
-        $periode = $tahun . '-' . $bulan;
+        if ($bulan < 10) {
+            $periode = $tahun . '-0' . $bulan;
+        } else {
+            $periode = $tahun . '-' . $bulan;
+        }
+
         // dd(bulan($bulan));
         $data['periode'] = bulan($bulan) . ' - ' . $tahun;
         $data['pengaturan'] = \DB::table('pengaturan')->where('id', 1)->first();
-        $data['gaji'] = \DB::table('gaji')
-            ->join('karyawan', 'gaji.nik', '=', 'karyawan.nik')
-            ->join('jabatan', 'jabatan.kode_jabatan', '=', 'karyawan.kode_jabatan')
-            ->join('departemen', 'departemen.kode_departemen', '=', 'karyawan.kode_departemen')
-            ->where('gaji.periode', '=', $periode)
-            ->orderBy('karyawan.nama')
-            ->get();
+        // $data['gaji'] = \DB::table('gaji')
+        //     ->join('karyawan', 'gaji.nik', '=', 'karyawan.nik')
+        //     ->join('jabatan', 'jabatan.kode_jabatan', '=', 'karyawan.kode_jabatan')
+        //     ->join('departemen', 'departemen.kode_departemen', '=', 'karyawan.kode_departemen')
+        //     ->where('gaji.periode', '=', $periode)
+        //     ->orderBy('karyawan.nama')
+        //     ->get();
+
+        $data['gaji'] = \DB::select("
+            select k.nik ,k.nama ,j.nama_jabatan , d.nama_departemen , g.total_gaji, g.periode
+            from gaji as g
+            join karyawan as k on g.nik = k.nik
+            join departemen as d on k.kode_departemen = d.kode_departemen
+            join jabatan as j on k.kode_jabatan = j.kode_jabatan
+            where g.periode = '" . $periode . "'");
+
+        // dd($data['gaji']);
 
         // $data['totalGaji'] = \DB::select("select sum(total_gaji) as totalgaji from gaji
         // where periode  = '" . $periode . "'");
         $data['totalGaji'] = \DB::table('gaji')->where('periode', $periode)->sum('total_gaji');
-        // dd($data['gaji']);
         $pdf = \PDF::loadView('gaji.laporan_gaji', $data);
         return $pdf->stream('laporan_gaji_' . $tahun . '_' . $bulan);
     }

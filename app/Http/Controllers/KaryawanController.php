@@ -53,7 +53,7 @@ class KaryawanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nik'           => 'required|unique:karyawan|min:6|max:10',
+            'nik'           => 'required|unique:karyawan|max:16',
             'nama'          => 'required',
             'tanggal_lahir' => 'required',
             'alamat'        => 'required',
@@ -61,13 +61,13 @@ class KaryawanController extends Controller
             'jenis_kelamin' => 'required|not_in:0',
             'gaji_pokok'    => 'required',
             'status_pegawai' => 'required|not_in:0',
-            'foto'          => 'image|mimes:jpeg,png|max:500'
+            'foto'          => 'mimes:jpg,jpeg,png|max:500'
         ]);
 
         if ($request->hasFile('foto')) {
             //upload foto
             $file = $request->file('foto');
-            $fileName = $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $destinationPath = 'uploads';
             $file->move($destinationPath, $fileName);
         } else {
@@ -110,7 +110,7 @@ class KaryawanController extends Controller
      */
     public function edit($nik)
     {
-        $karyawan = Karyawan::find($nik);
+        // $karyawan = Karyawan::find($nik);
         $data['karyawan'] = Karyawan::find($nik);
         $data['jabatan'] = Jabatan::pluck('nama_jabatan', 'kode_jabatan');
         $data['departemen'] = Departemen::pluck('nama_departemen', 'kode_departemen');
@@ -135,7 +135,7 @@ class KaryawanController extends Controller
             'jenis_kelamin' => 'required|not_in:0',
             'gaji_pokok'    => 'required',
             'status_pegawai' => 'required|not_in:0',
-            'foto'          => 'image|mimes:jpeg,png|max:500'
+            'foto'          => 'mimes:png,jpeg,jpg|max:500'
         ]);
 
 
@@ -150,7 +150,7 @@ class KaryawanController extends Controller
         if ($request->hasFile('foto')) {
             //upload foto
             $file = $request->file('foto');
-            $fileName = $file->getClientOriginalName();
+            $fileName = $nik . '.' . $file->getClientOriginalExtension();
             $destinationPath = 'uploads';
             $file->move($destinationPath, $fileName);
             $karyawan->foto = $fileName;

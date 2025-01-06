@@ -15,11 +15,11 @@ class CreateTableSetting extends Migration
     {
         Schema::create('pengaturan', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nama_perusahaan',50);
-            $table->string('alamat_perusahaan');
-            $table->string('email');
-            $table->string('no_telepon');
-            $table->string('logo');
+            $table->string('nama_perusahaan', 255);
+            $table->string('alamat_perusahaan', 255);
+            $table->string('email', 255);
+            $table->string('no_telepon', 255);
+            $table->string('logo', 255);
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateTableSetting extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_setting');
+        Schema::dropIfExists('pengaturan');
     }
 }

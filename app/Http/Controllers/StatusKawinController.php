@@ -44,7 +44,7 @@ class StatusKawinController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_status_kawin' => 'required|unique:status_kawin|max:3|min:1',
+            'kode_status_kawin' => 'required|unique:status_kawin|max:5|min:1',
             'keterangan' => 'required',
         ]);
         $statusKawin = new StatusKawin();

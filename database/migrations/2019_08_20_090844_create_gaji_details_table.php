@@ -16,7 +16,7 @@ class CreateGajiDetailsTable extends Migration
         Schema::create('gaji_detail', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('gaji_id');
-            $table->string('kode_komponen', 4);
+            $table->string('kode_komponen', 255);
             $table->timestamps();
         });
     }

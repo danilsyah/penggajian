@@ -15,7 +15,7 @@ class CreateAnggotaKelompokKerjasTable extends Migration
     {
         Schema::create('anggota_kelompok_kerja', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nik', 10);
+            $table->string('nik', 255)->nullable();
             $table->integer('kelompok_kerja_id');
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ class CreateAnggotaKelompokKerjasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('anggota_kelompok_kerjas');
+        Schema::dropIfExists('anggota_kelompok_kerja');
     }
 }

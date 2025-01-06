@@ -15,8 +15,9 @@ class CreateGajisTable extends Migration
     {
         Schema::create('gaji', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nik', 10);
-            $table->string('periode', 6);
+            $table->string('nik', 255);
+            $table->string('periode', 255);
+            $table->integer('total_gaji')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateGajisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gajis');
+        Schema::dropIfExists('gaji');
     }
 }

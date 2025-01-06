@@ -15,10 +15,13 @@ class CreateLembursTable extends Migration
     {
         Schema::create('lembur', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nik', 10);
+            $table->string('periode', 255)->nullable();
+            $table->string('nik', 255);
             $table->dateTime('tanggal_masuk');
             $table->dateTime('tanggal_pulang');
-            $table->integer('durasi_lembur');
+            $table->string('durasi_lembur');
+            $table->integer('upah')->nullable();
+            $table->integer('kalender_kerja_id')->nullable();
             $table->timestamps();
         });
     }

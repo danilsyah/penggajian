@@ -14,14 +14,18 @@ class CreateKaryawansTable extends Migration
     public function up()
     {
         Schema::create('karyawan', function (Blueprint $table) {
-            $table->string('nik',10)->primary();
-            $table->string('nama',50);
-            $table->date('tanggal_lahir');
-            $table->text('alamat');
-            $table->date('tanggal_masuk');
-            $table->string('kode_status_kawin',3);
-            $table->string('jenis_kelamin',1);
-            $table->text('foto');
+            $table->string('nik', 255);
+            $table->string('nama', 255)->nullable();
+            $table->date('tanggal_lahir')->nullable();
+            $table->text('alamat')->nullable();
+            $table->date('tanggal_masuk')->nullable();
+            $table->string('kode_status_kawin', 255)->nullable();
+            $table->string('jenis_kelamin', 1)->nullable();
+            $table->integer('gaji_pokok')->nullable();
+            $table->string('status_pegawai', 255)->nullable();
+            $table->text('foto')->nullable();
+            $table->string('kode_departemen', 255);
+            $table->string('kode_jabatan', 255);
             $table->timestamps();
         });
     }
@@ -33,6 +37,6 @@ class CreateKaryawansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('karyawans');
+        Schema::dropIfExists('karyawan');
     }
 }

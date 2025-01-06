@@ -22,12 +22,17 @@ class SettingController extends Controller
     {
 
         if ($request->hasFile('logo')) {
-            //upload foto
+            // Upload logo
             $file = $request->file('logo');
-            $fileName = $file->getClientOriginalName();
-            $destionationPath = 'uploads';
-            $file->move($destionationPath, $fileName);
 
+            // Mengganti nama file dengan timestamp dan ekstensi asli
+            // $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $fileName = 'logo.' . $file->getClientOriginalExtension();
+
+            $destinationPath = 'uploads';
+            $file->move($destinationPath, $fileName);
+
+            // Menyimpan data termasuk logo
             $data = [
                 'nama_perusahaan'   => $request->nama_perusahaan,
                 'alamat_perusahaan' => $request->alamat_perusahaan,
@@ -36,7 +41,7 @@ class SettingController extends Controller
                 'logo'              => $fileName
             ];
         } else {
-            //tidak upload foto
+            // Tidak upload logo
             $data = [
                 'nama_perusahaan'   => $request->nama_perusahaan,
                 'alamat_perusahaan' => $request->alamat_perusahaan,

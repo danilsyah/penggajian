@@ -14,9 +14,9 @@ class CreateStatusKawinTable extends Migration
     public function up()
     {
         Schema::create('status_kawin', function (Blueprint $table) {
-           // $table->bigIncrements('id');
-            $table->string('kode_status_kawin',3)->primary();
-            $table->string('keterangan');
+            // $table->bigIncrements('id');
+            $table->string('kode_status_kawin', 255);
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }

@@ -44,7 +44,7 @@ class LemburController extends Controller
     {
         $data['karyawan'] = Karyawan::pluck('nama', 'nik');
         // $data['periodeGaji'] = Gaji::pluck('periode', 'periode');
-        $data['periode'] = date('Ym');
+        $data['periode'] = date('Y-m');
         return view('lembur.create', $data);
     }
 
@@ -68,7 +68,7 @@ class LemburController extends Controller
         $durasiMenit = $jamLemburMulai->diff($jamLemburAkhir)->format('%I');
         $durasiLembur = $durasiJam . ':' . $durasiMenit;
         $upahPerJam = $karyawan->gaji_pokok / 173; //rumus upah per jam
-        // perhitungan pembulatan menit 
+        // perhitungan pembulatan menit
         if ($durasiMenit >= 45) {
             $pembulantanDurasiLembur = $durasiJam + 1;
         } else if ($durasiMenit >= 30 && $durasiMenit <= 44) {

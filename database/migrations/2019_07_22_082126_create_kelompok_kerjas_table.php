@@ -15,7 +15,7 @@ class CreateKelompokKerjasTable extends Migration
     {
         Schema::create('kelompok_kerja', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('kelompok_kerja');
+            $table->string('kelompok_kerja', 255);
             $table->timestamps();
         });
     }
